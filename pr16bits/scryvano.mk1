@@ -1,0 +1,34 @@
+!define BLANK ""
+C:\trabajos\programas\scryvano\pr16bits\main.obj : C:\trabajos\programas\scr&
+yvano\pr16bits\main.c .AUTODEPEND
+ @C:
+ cd C:\trabajos\programas\scryvano\pr16bits
+ *wcc main.c -i="C:\trabajos\programas\openwatcom/h;C:\trabajos\programas\op&
+enwatcom/h/win" -w4 -e25 -zq -os -s -ol -or -hc -3 -bt=windows -fo=.obj -ml
+
+C:\trabajos\programas\scryvano\pr16bits\about.res : C:\trabajos\programas\sc&
+ryvano\dialogs\16bits\about.rc .AUTODEPEND
+ @C:
+ cd C:\trabajos\programas\scryvano\pr16bits
+ *wrc ..\dialogs\16bits\about.rc -bt=windows -i="$[:;C:\trabajos\programas\o&
+penwatcom/h;C:\trabajos\programas\openwatcom/h/win" -q -ad -r -fo=about.res
+
+C:\trabajos\programas\scryvano\pr16bits\scryvano.exe : C:\trabajos\programas&
+\scryvano\pr16bits\main.obj C:\trabajos\programas\scryvano\pr16bits\about.re&
+s .AUTODEPEND
+ @C:
+ cd C:\trabajos\programas\scryvano\pr16bits
+ @%write scryvano.lk1 FIL main.obj
+ @%append scryvano.lk1 
+!ifneq BLANK ""
+ *wlib -q -n -b scryvano.imp 
+ @%append scryvano.lk1 LIBR scryvano.imp
+!endif
+!ifneq BLANK "about.res"
+ @%append scryvano.lk1 op resource=about.res
+!endif
+ *wlink name scryvano sys windows option alignment=4096 option objalign=4096&
+ op maxe=25 op q op symf @scryvano.lk1
+!ifneq BLANK "about.res"
+!endif
+

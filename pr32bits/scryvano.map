@@ -1,0 +1,500 @@
+Open Watcom Linker Version 1.9
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       26/08/08 15:50:59
+Executable Image: scryvano.exe
+creating a Windows NT windowed executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+.idata                          00407000             00000757
+DGROUP                          00408000             00011790
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+BEGTEXT                CODE           AUTO           00401000        00000007
+_TEXT                  CODE           AUTO           00401010        00005a3f
+TRANSFER CODE          CODE           AUTO           00406a50        00000192
+.idata                 .idata         .idata         00407000        00000757
+_NULL                  BEGDATA        DGROUP         00408000        00000004
+_AFTERNULL             BEGDATA        DGROUP         00408004        00000000
+CONST                  DATA           DGROUP         00408004        000000f4
+CONST2                 DATA           DGROUP         004080f8        00000000
+_DATA                  DATA           DGROUP         004080f8        00000274
+XIB                    DATA           DGROUP         0040836c        00000000
+XI                     DATA           DGROUP         0040836c        00000018
+XIE                    DATA           DGROUP         00408384        00000000
+YIB                    DATA           DGROUP         00408384        00000000
+YI                     DATA           DGROUP         00408384        00000012
+YIE                    DATA           DGROUP         00408396        00000000
+TIB                    DATA           DGROUP         00408396        00000000
+TI                     DATA           DGROUP         00408396        00000000
+TIE                    DATA           DGROUP         00408396        00000000
+DATA                   DATA           DGROUP         00408396        00000000
+_BSS                   BSS            DGROUP         00409000        0000078c
+STACK                  STACK          DGROUP         00409790        00010000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: main.obj(C:\trabajos\programas\scryvano\pr32bits\main.c)
+00409000+      _sbMain
+00409004+      _mnuCharacter
+00409008+      _mnuFind
+0040900c+      _mnuExecute
+00409010+      _mnuFile
+00409014+      _mnuParagraph
+00409018+      _mnuMenu
+0040901c+      _mnuAbout
+00409020+      _mnuWindow
+00409024+      _mnuHelp
+00409028+      _mnuView
+0040902c+      _mnuPlugins
+00409030+      _mnuDocument
+00401038+      getDefaultFont_
+00401067+      getDefaultFontHeight_
+004010dd+      StatusBar_CreateWindow_
+004011aa+      _AboutDlgProc@16
+004013e4+      StatusBar_Create_
+00401453*      StatusBar_SetText_
+0040148c+      StatusBar_Resize_
+004014e2       _WinMain@16
+004018a9+      _WndProc@16
+00409034+      _mnuEdit
+00409038+      _appInst
+0040903c+      _frmMain
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(stk)
+0040199d       __CHK
+004019ad*      __STK
+004019cc*      __STKOVERFLOW_
+004019dc       __GRO
+004019fc*      __alloca_probe
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(strcpy.c)
+00401a10       strcpy_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(strcat.c)
+00401a40       strcat_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(snprintf.c)
+00401ab0+      vsnprintf_
+00401b10       snprintf_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(cstrtwwt)
+00401b38       _wstart_
+00401b38*      _wstart2_
+00401b38*      WinMainCRTStartup
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(xmsgwnt.c)
+00401ba0+      __exit_with_msg_
+00401c00       __fatal_runtime_error_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mainwnt.c)
+00408108*      ___TlsIndex
+0040810c+      ___FirstThreadData
+00408110       ___GetThreadPtr
+00408114       __AccessFileH
+00408118       __ReleaseFileH
+0040811c       __AccessIOB
+00408120       __ReleaseIOB
+00408124       __AccessNHeap
+00408128*      __AccessFHeap
+0040812c       __ReleaseNHeap
+00401c30*      __threadid_
+00401c50+      __sig_null_rtn_
+00401c60+      __NTInit_
+00401e40+      __NTFini_
+00401ea0       __NTMainInit_
+00401f00       __exit_
+00408130*      __ReleaseFHeap
+00408134*      __AccessTDList
+00408138*      __ReleaseTDList
+0040813c       __AccessFList
+00408140       __ReleaseFList
+00408144+      __ThreadExitRtn
+00408148       ___sig_init_rtn
+0040814c       ___sig_fini_rtn
+00408150       ___process_fini
+00409048       ___Is_DLL
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(prtf.c)
+00401f50       __prtf_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(wmainwnt.c)
+00402c20       __WinMain
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(segdefns)
+00401003       ___begtext
+00408000*      __nullarea
+0040836c       __Start_XI
+00408384       __End_XI
+00408384       __Start_YI
+00408396       __End_YI
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(enterdb.c)
+00402cd0       __EnterWVIDEO_
+00408154+      ___WD_Present
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(hdlman.c)
+00408158+      ___NHandles
+0040815c+      ___OSHandles
+00408160+      ___FakeHandles
+00402d00+      __growPOSIXHandles_
+00402da0+      __allocPOSIXHandle_
+00402e60*      __freePOSIXHandle_
+00402e80       __getOSHandle_
+00402e90       __setOSHandle_
+00402ee0+      __NTGetFakeHandle_
+00402f50       __initPOSIXHandles_
+00403030*      __set_handles_
+00403040*      _grow_handles_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(crwdata)
+004081b0       __osmajor
+004081b1       __osminor
+004081b2       __osbuild
+004081b4       __osver
+004081b8       __winmajor
+004081bc       __winminor
+004081c0       __winver
+0040817c       __LpDllName
+00408180       __LpwCmdLine
+00408184       __LpwPgmName
+00408188       __LpwDllName
+00408174       __LpCmdLine
+00408178       __LpPgmName
+0040816c*      __dynend
+00408170       __curbrk
+0040818c*      __STACKLOW
+00408190       __STACKTOP
+00408194       __ASTACKSIZ
+00408198       __ASTACKPTR
+0040819c*      __cbyte
+004081a0*      __cbyte2
+004081a4*      __child
+004081aa       __Envptr
+004081ae*      __Envseg
+004081a8*      __no87
+004081c4       ___FPE_handler
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(environ.c)
+00409664       ___env_mask
+00409668       _environ
+0040966c       __wenviron
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(getmodfn.c)
+00403080       __lib_GetModuleFileNameW_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(strdup.c)
+00403120       __clib_strdup_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(istable.c)
+00403160       __IsTable
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(ustrdup.c)
+00403261       __clib_wcsdup_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nfree.c)
+00403290       _nfree_
+00403290       free_
+00409670       ___MiniHeapFreeRover
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(excptwnt.c)
+00403a00+      ___ReportException@4
+00403e50       __DefaultExceptionHandler_
+00403e90+      ___ExceptionFilter
+004040a0       __NewExceptionFilter_
+004040d0       __DoneExceptionFilter_
+004081c8       ___oscode_check_func
+004081cc       ___raise_func
+00409674*      _sw
+00409678+      ___ExceptionHandled
+00409679+      ___ReportInvoked
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(stklmwnt.c)
+00404110       __init_stack_limits_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(initrtns.c)
+00404190       __InitRtns
+004041e0       __FiniRtns
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(wctomb.c)
+00404240       wctomb_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(itoa.c)
+00404280+      utoa_
+004042d0       itoa_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(strupr.c)
+00404300       strupr_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(noefgfmt.c)
+004081e4       ___EFG_printf
+004081e8*      ___EFG_scanf
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(lltoa.c)
+00404370       ulltoa_
+004043e0*      lltoa_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(ltoa.c)
+00404410       ultoa_
+00404460*      ltoa_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbisdbcs.c)
+0040967c       ___IsDBCS
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbislead.c)
+00404490*      _ismbblead_
+00409680       ___MBCSIsTable
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mthrdini.c)
+004044b0       __InitThreadData_
+004081ec       ___ThreadDataSize
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(memset.c)
+004044e0       memset_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(stackwnt.c)
+00404500       stackavail_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(cinit.c)
+00404510       __CommonInit_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(exit.c)
+00404511+      __null_int23_exit_
+00404512       exit_
+00404562*      _exit_
+004081f0+      ___int23_exit
+004081f4+      ___FPE_handler_exit
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(dosseg)
+00001234       __DOSseg__
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nmalloc.c)
+00404580       _nmalloc_
+00404580       malloc_
+004081f8       ___nheapbeg
+004081fc       ___MiniHeapRover
+00408200       ___LargestSizeB4MiniHeapRover
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(seterrno.c)
+0040467a       __set_errno_
+00404688*      __set_EDOM_
+00404696*      __set_ERANGE_
+004046a4*      __set_EINVAL_
+004046b7*      __set_doserrno_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nrealloc.c)
+004046d0*      _nrealloc_
+004046d0       realloc_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(iomode.c)
+00404750       __GetIOMode_
+00404770*      __SetIOMode_nogrow_
+00408204       ___NFiles
+00408208       ___init_mode
+00408258       ___io_mode
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(stiomode.c)
+00404790       __grow_iomode_
+00404860+      __shrink_iomode_
+004048a0       __SetIOMode_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(setenvp.c)
+00404910       __setenvp_
+004049d0       __freeenvp_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(ustrlen.c)
+00404a1d       wcslen_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(memcpy.c)
+00404a30       memcpy_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mem.c)
+00404a50       __MemAllocator
+00404b00       __MemFree
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(conutwnt.c)
+00404c50*      __NTRealKey_
+00404d00*      __NTConsoleInput_
+00404d10       __NTConsoleOutput_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(fclex387.c)
+00404d20       _ClearFPE_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(signlwnt.c)
+00408264+      __SignalTable
+00404d30+      __SetSignalFunc_
+00404d80+      __GetSignalFunc_
+00404db0+      __GetSignalOSCode_
+00404de0+      __CheckSignalExCode_
+00404f20+      __sigabort_
+00404f30       __sigfpe_handler_
+00404f80*      signal_
+00405010+      raise_
+00405080+      __SigInit_
+004050d0+      __SigFini_
+00405110+      __sig_init_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbinit.c)
+00405169       __mbinit_
+004082d0       ___MBCodePage
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(alphabet.c)
+004080d0       ___Alphabet
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(__stos)
+00405260       __STOSB
+00405297*      __STOSD
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nmemneed.c)
+00405310       __nmemneed_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(grownear.c)
+00405480       __ExpandDGROUP_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nmsize.c)
+004054a0       _nmsize_
+004054a0*      _msize_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nexpand.c)
+004054b0       _nexpand_
+004054b0*      _expand_
+004054f0+      __HeapManager_expand_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(iomodtty.c)
+004056b0       __ChkTTYIOMode_
+004056f0*      __IOMode_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(dofilstr.c)
+00405730       __ParsePosixHandleStr_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(clearenv.c)
+00405850       clearenv_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(abort.c)
+004058f5*      abort_
+00405907       __terminate_
+004082d4       ___abort
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(amblksiz.c)
+004082d8       __amblksiz
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(heapen.c)
+00405920*      _heapenable_
+004082dc       ___heap_enabled
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(nheapmin.c)
+00405950       _nheapshrink_
+00405950*      _nheapmin_
+00405950*      _heapmin_
+00405950*      _heapshrink_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(isattwnt.c)
+00405a40       isatty_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(getenv.c)
+00405a60       getenv_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(strncpy.c)
+00405af0       strncpy_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(strtol.c)
+00405d50*      strtoul_
+00405d60       strtol_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(putenv.c)
+00405d70       putenv_
+00406000       __putenv_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbterm.c)
+00406170       _mbterm_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbsnextc.c)
+004061b0       _mbsnextc_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbcupper.c)
+004061f0       _mbctoupper_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbsinc.c)
+00406220       _mbsinc_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(tolower.c)
+00406250       tolower_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbschr.c)
+00406260       _mbschr_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbslen.c)
+004062c0       _mbslen_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbstowcs.c)
+004062f0       mbstowcs_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(uputenv.c)
+00406370*      _wputenv_
+00406590       __wputenv_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(toupper.c)
+00406690       toupper_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(memmove.c)
+004066a0       memmove_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbconv.c)
+00406700       _mbvtop_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbclen.c)
+00406720       _mbclen_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbccmp.c)
+00406750       _mbccmp_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(mbtowc.c)
+00406790       mbtowc_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(ustrchr.c)
+00406820       wcschr_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(setenvar.c)
+00406840       __lib_SetEnvironmentVariableW_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(crtwenv.c)
+00406930       __create_wide_environment_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(wcstombs.c)
+004069a0       wcstombs_
+Module: C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib(utoupper.c)
+00406a3f       towupper_
+
+
+                        +----------------------+
+                        |   Imported Symbols   |
+                        +----------------------+
+
+Symbol                              Module
+======                              ======
+
+_GetStockObject@4                   GDI32.DLL
+_GetDC@4                            USER32.DLL
+_SelectObject@8                     GDI32.DLL
+_GetTextMetricsA@8                  GDI32.DLL
+_ReleaseDC@8                        USER32.DLL
+_GetClientRect@8                    USER32.DLL
+_CreateWindowExA@48                 USER32.DLL
+_SendDlgItemMessageA@20             USER32.DLL
+_GetDlgItem@8                       USER32.DLL
+_GetWindowRect@8                    USER32.DLL
+_ScreenToClient@8                   USER32.DLL
+_SetWindowPos@28                    USER32.DLL
+_GetModuleHandleA@4                 KERNEL32.DLL
+_LoadImageA@24                      USER32.DLL
+_SetDlgItemTextA@12                 USER32.DLL
+_GetDesktopWindow@0                 USER32.DLL
+_EndDialog@8                        USER32.DLL
+_SendMessageA@16                    USER32.DLL
+_SetWindowTextA@8                   USER32.DLL
+_MoveWindow@24                      USER32.DLL
+_InitCommonControls@0               COMCTL32.DLL
+_LoadIconA@8                        USER32.DLL
+_LoadCursorA@8                      USER32.DLL
+_RegisterClassA@4                   USER32.DLL
+_CreateMenu@0                       USER32.DLL
+_CreatePopupMenu@0                  USER32.DLL
+_AppendMenuA@16                     USER32.DLL
+_ShowWindow@8                       USER32.DLL
+_UpdateWindow@4                     USER32.DLL
+_GetMessageA@16                     USER32.DLL
+_TranslateMessage@4                 USER32.DLL
+_DispatchMessageA@4                 USER32.DLL
+_DialogBoxParamA@20                 USER32.DLL
+_PostQuitMessage@4                  USER32.DLL
+_DefWindowProcA@16                  USER32.DLL
+_GetStdHandle@4                     KERNEL32.DLL
+_WriteFile@20                       KERNEL32.DLL
+_GetEnvironmentStringsA@0           KERNEL32.DLL
+_GetVersion@0                       KERNEL32.DLL
+_GetModuleFileNameA@12              KERNEL32.DLL
+_GetCommandLineA@0                  KERNEL32.DLL
+_GetCommandLineW@0                  KERNEL32.DLL
+_FreeEnvironmentStringsA@4          KERNEL32.DLL
+_ExitProcess@4                      KERNEL32.DLL
+_SetStdHandle@8                     KERNEL32.DLL
+_CreateEventA@16                    KERNEL32.DLL
+_CloseHandle@4                      KERNEL32.DLL
+_GetModuleFileNameW@12              KERNEL32.DLL
+_MultiByteToWideChar@24             KERNEL32.DLL
+_LoadLibraryA@4                     KERNEL32.DLL
+_GetProcAddress@8                   KERNEL32.DLL
+_SetUnhandledExceptionFilter@4      KERNEL32.DLL
+_UnhandledExceptionFilter@4         KERNEL32.DLL
+_VirtualQuery@12                    KERNEL32.DLL
+_WideCharToMultiByte@32             KERNEL32.DLL
+_GetCurrentThreadId@0               KERNEL32.DLL
+_CreateFileA@28                     KERNEL32.DLL
+_SetConsoleCtrlHandler@8            KERNEL32.DLL
+_GetACP@0                           KERNEL32.DLL
+_GetOEMCP@0                         KERNEL32.DLL
+_GetCPInfo@8                        KERNEL32.DLL
+_VirtualAlloc@16                    KERNEL32.DLL
+_VirtualFree@12                     KERNEL32.DLL
+_GetFileType@4                      KERNEL32.DLL
+_SetEnvironmentVariableA@8          KERNEL32.DLL
+_CharUpperA@4                       USER32.DLL
+_SetEnvironmentVariableW@8          KERNEL32.DLL
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+C:\trabajos\programas\openwatcom/lib386/nt\kernel32.lib
+C:\trabajos\programas\openwatcom/lib386/nt\user32.lib
+C:\trabajos\programas\openwatcom/lib386/nt\gdi32.lib
+C:\trabajos\programas\openwatcom/lib386/nt\comctl32.lib
+C:\trabajos\programas\openwatcom/lib386/nt\clib3r.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  00010000 (65536.)
+Memory size:  00017ac9 (96969.)
+Entry point address: 00401b38
+Link time: 00:00.31

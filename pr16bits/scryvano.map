@@ -1,0 +1,369 @@
+Open Watcom Linker Version 1.9
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       26/08/08 17:10:31
+Executable Image: scryvano.exe
+creating a Windows 16-bit executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          0002:0000            000026a0
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+main_TEXT              CODE           AUTO           0001:0000       00000b91
+_TEXT                  CODE           AUTO           0001:0b92       0000338d
+FAR_DATA               FAR_DATA       AUTO           0002:0000       00000000
+_NULL                  BEGDATA        DGROUP         0002:0000       00000010
+AFX_NULL               BEGDATA        DGROUP         0002:0010       00000000
+CONST                  DATA           DGROUP         0002:0010       0000012a
+CONST2                 DATA           DGROUP         0002:013a       00000132
+_DATA                  DATA           DGROUP         0002:026c       000001de
+XIB                    DATA           DGROUP         0002:044a       00000000
+XI                     DATA           DGROUP         0002:044a       0000001e
+XIE                    DATA           DGROUP         0002:0468       00000000
+YIB                    DATA           DGROUP         0002:0468       00000000
+YI                     DATA           DGROUP         0002:0468       00000006
+YIE                    DATA           DGROUP         0002:046e       00000000
+STRINGS                DATA           DGROUP         0002:046e       00000000
+DATA                   DATA           DGROUP         0002:046e       00000000
+BCSD                   DATA           DGROUP         0002:046e       00000000
+_BSS                   BSS            DGROUP         0002:046e       00000228
+STACK                  STACK          DGROUP         0002:06a0       00002000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: main.obj(C:\trabajos\programas\scryvano\pr16bits\main.c)
+0002:046e+     _sbMain
+0002:0470+     _mnuAbout
+0002:0472+     _mnuWindow
+0002:0474+     _mnuHelp
+0002:0476+     _mnuPlugins
+0002:0478+     _mnuCharacter
+0002:047a+     _mnuFind
+0002:047c+     _mnuExecute
+0002:047e+     _mnuFile
+0002:0480+     _mnuParagraph
+0002:0482+     _mnuMenu
+0002:0484+     _mnuView
+0002:0486+     _mnuDocument
+0002:0488+     _mnuEdit
+0001:0000+     getDefaultFont_
+0001:002f+     getDefaultFontHeight_
+0001:00a3+     StatusBar_CreateWindow_
+0001:014b+     ABOUTDLGPROC
+0001:0493+     StatusBar_Create_
+0001:050f+     StatusBar_SetText_
+0001:054d+     StatusBar_Resize_
+0001:05aa      WINMAIN
+0001:09ef+     WNDPROC
+0002:048a+     _appInst
+0002:048c+     _frmMain
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(stk)
+0001:0b97      __STK
+0001:0bae*     __STKOVERFLOW_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(strcpy.c)
+0001:0bcb      strcpy_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(strcat.c)
+0001:0c19      strcat_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(sprintf.c)
+0001:0c4f      sprintf_
+Module: C:\trabajos\programas\openwatcom/lib286/win\emu87.lib(initemuw.asm)
+0000:8000*     FJSRQQ
+0000:0632*     FISRQQ
+0000:1632      FIERQQ
+0000:5c32      FIDRQQ
+0000:a23d      FIWRQQ
+0000:c000*     FJCRQQ
+0000:4000*     FJARQQ
+0000:0e32*     FICRQQ
+0000:fe32*     FIARQQ
+0001:0c82      __init_87_emulator
+0001:0cc1*     __fini_87_emulator
+0001:0cd0*     _userfpe
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(floor.c)
+0001:0cdf      floor_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(fchop87)
+0001:0d30      __CHP
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(wstart)
+0000:0006*     pLocalHeap
+0000:0008*     pAtomTable
+0000:000a*     pStackTop
+0000:000c*     pStackMin
+0000:000e*     pStackBot
+0002:0000*     __nullarea
+0002:0270*     __curbrk
+0002:0272*     __psp
+0002:0274*     __osmajor
+0002:0275*     __osminor
+0002:0276*     __osmode
+0002:000a      __STACKLOW
+0002:000c*     __STACKTOP
+0002:0278*     __cbyte
+0002:027a*     __child
+0002:027c      __no87
+0002:0277*     __HShift
+0002:027e*     __get_ovl_stack
+0002:0282*     __restore_ovl_stack
+0002:0286*     ___FPE_handler
+0002:028a*     __LpCmdLine
+0002:028e*     __LpPgmName
+0001:0d58      _wstart_
+0001:0d58*     _cstart_
+0001:0e39      __exit_
+0001:0e4a      __GETDS
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(fltused.c)
+0002:0322      _fltused_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(cmodel)
+0001:0e4c      _big_code_
+0001:0e4c*     CodeModelMismatch
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(_8087)
+0002:0324      __8087
+0002:0325      __real87
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(xmsgwin.c)
+0001:0e4c+     __exit_with_msg_
+0001:0ead      __fatal_runtime_error_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(vsprintf.c)
+0001:0ef1      vsprintf_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(init8087)
+0001:0f20      __init_8087_emu
+0001:0f26      __x87id
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(sigfpe.c)
+0001:0f65      __raise_fpe_
+0001:0f6d+     __sigfpe_handler_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(modf87)
+0001:0ffa      modf_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(exit.c)
+0001:101c+     __null_int23_exit_
+0001:101d      exit_
+0001:1056      _exit_
+0002:0326+     ___int23_exit
+0002:032a+     ___FPE_handler_exit
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(initrtns.c)
+0001:10a6      __FInitRtns
+0001:10b1+     __InitRtns
+0001:110f      __FFiniRtns
+0001:111a      __FiniRtns
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(dosseg)
+0001:117e      __DOSseg__
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(setefg.c)
+0001:117f      __setEFGfmt_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(chk8087.c)
+0001:11c0*     _fpreset_
+0001:11da      __init_8087_
+0001:1215      __chk8087_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(enterdb.c)
+0001:1251      __EnterWVIDEO_
+0002:032e+     ___WD_Present
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(prtf.c)
+0001:1275      __prtf_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(8087cw.c)
+0002:0330      __8087cw
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(sigtab.c)
+0002:0332      __SignalTable
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(winrtns.c)
+0002:0366*     __WindowsIsWindowedHandle
+0002:036a*     __WindowsRemoveWindowedHandle
+0002:036e*     __WindowsNewWindow
+0002:0372*     __WindowsCloseWindow
+0002:0376*     __WindowsSetAbout
+0002:037a*     __WindowsSetAppTitle
+0002:037e*     __WindowsSetConTitle
+0002:0382*     __WindowsDestroyOnClose
+0002:0386*     __WindowsYieldControl
+0002:038a*     __WindowsShutDown
+0002:038e*     __WindowsStdin
+0002:0392*     __WindowsStdout
+0002:0396*     __WindowsKbhit
+0002:039a*     __WindowsGetch
+0002:039e*     __WindowsGetche
+0002:03a2*     __WindowsPutch
+0002:03a6      __WindowsExitRtn
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(sgdef086)
+0002:044a      __Start_XI
+0002:0468      __End_XI
+0002:0468      __Start_YI
+0002:046e      __End_YI
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(noefgfmt.c)
+0002:03aa      ___EFG_printf
+0002:03ae      ___EFG_scanf
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(efgfmt.c)
+0001:216a      _EFG_Format_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(cnvs2d.c)
+0001:2323      __cnvs2d_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(save8087.c)
+0002:03b2      ___Save8087
+0002:03b6      ___Rest8087
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(wctomb.c)
+0001:2344      wctomb_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(itoa.c)
+0001:2370+     utoa_
+0001:23d3      itoa_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(i4m)
+0001:23fc      __I4M
+0001:23fc      __U4M
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(strupr.c)
+0001:2414      strupr_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(mbisdbcs.c)
+0002:058e      ___IsDBCS
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(mbislead.c)
+0001:2438*     _ismbblead_
+0002:0590      ___MBCSIsTable
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(lltoa.c)
+0001:2456      ulltoa_
+0001:253f*     lltoa_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(ltoa.c)
+0001:25a3      ultoa_
+0001:2616*     ltoa_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(rtcntrl.c)
+0001:2647*     _SetLD64bit_
+0001:264d*     _SetLD80bit_
+0001:2653      _LDisDouble_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(ldcvt.c)
+0001:277d      _LDScale10x_
+0001:2d6b      __LDcvt_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(strtod.c)
+0001:3865+     __Strtold_
+0001:3a2c      strtod_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(alphabet.c)
+0002:0114      ___Alphabet
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(mbinit.c)
+0001:3bed      __mbinit_
+0002:0448+     ___MBCodePage
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(ldclass.c)
+0001:3c8b      __LDClass_
+0001:3ce3*     _FLClass_
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(i4d)
+0001:3cf8      __I4D
+0001:3d47*     __U4D
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(istable.c)
+0002:013a      __IsTable
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(tolower.c)
+0001:3dcb      tolower_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(bufld086)
+0001:3dda      __ZBuf2LD
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(seterrno.c)
+0001:3ea2*     __set_errno_
+0001:3ebd*     __set_EDOM_
+0001:3ed4      __set_ERANGE_
+0001:3eea*     __set_EINVAL_
+0001:3f03*     __set_doserrno_
+Module: C:\trabajos\programas\openwatcom/lib286/win\math87l.lib(inf_nan.c)
+0002:023c*     ___f_infinity
+0002:0240*     ___f_posqnan
+0002:0244      ___d_infinity
+0002:024c      ___d_posqnan
+0002:0254*     ___ld_infinity
+0002:025c*     ___ld_posqnan
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(hugeval.c)
+0002:0264      __HugeValue
+Module: C:\trabajos\programas\openwatcom/lib286/win\clibl.lib(errno.c)
+0001:3f13      __get_errno_ptr_
+0001:3f19      __get_doserrno_ptr_
+0002:0692+     _errno
+0002:0694+     __doserrno
+
+
+                        +----------------------+
+                        |   Imported Symbols   |
+                        +----------------------+
+
+Symbol                              Module
+======                              ======
+
+GETSTOCKOBJECT                      GDI
+GETDC                               USER
+SELECTOBJECT                        GDI
+GETTEXTMETRICS                      GDI
+RELEASEDC                           USER
+GETCLIENTRECT                       USER
+CREATEWINDOW                        USER
+SENDDLGITEMMESSAGE                  USER
+GETDLGITEM                          USER
+GETWINDOWRECT                       USER
+SCREENTOCLIENT                      USER
+SETWINDOWPOS                        USER
+SETDLGITEMTEXT                      USER
+GETDESKTOPWINDOW                    USER
+LOADBITMAP                          USER
+GETOBJECT                           GDI
+CREATECOMPATIBLEDC                  GDI
+SETSTRETCHBLTMODE                   GDI
+STRETCHBLT                          GDI
+DELETEDC                            GDI
+DELETEOBJECT                        GDI
+ENDDIALOG                           USER
+SENDMESSAGE                         USER
+SETWINDOWTEXT                       USER
+MOVEWINDOW                          USER
+LOADICON                            USER
+LOADCURSOR                          USER
+REGISTERCLASS                       USER
+CREATEMENU                          USER
+CREATEPOPUPMENU                     USER
+APPENDMENU                          USER
+GETSYSTEMMETRICS                    USER
+SHOWWINDOW                          USER
+UPDATEWINDOW                        USER
+GETMESSAGE                          USER
+TRANSLATEMESSAGE                    USER
+DISPATCHMESSAGE                     USER
+SETBKCOLOR                          GDI
+SETTEXTCOLOR                        GDI
+MAKEPROCINSTANCE                    KERNEL
+DIALOGBOXPARAM                      USER
+FREEPROCINSTANCE                    KERNEL
+POSTQUITMESSAGE                     USER
+DEFWINDOWPROC                       USER
+__FPMATH                            WIN87EM
+GETWINFLAGS                         KERNEL
+INITTASK                            KERNEL
+GETMODULEFILENAME                   KERNEL
+INITAPP                             USER
+WAITEVENT                           KERNEL
+__AHSHIFT                           KERNEL
+MESSAGEBOX                          USER
+GETVERSION                          KERNEL
+ISDBCSLEADBYTE                      KERNEL
+GETKBCODEPAGE                       KEYBOARD
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+C:\trabajos\programas\openwatcom/lib286/win\windows.lib
+C:\trabajos\programas\openwatcom/lib286/win\clibl.lib
+C:\trabajos\programas\openwatcom/lib286/win\math87l.lib
+C:\trabajos\programas\openwatcom/lib286/win\emu87.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  2000 (8192.)
+Memory size:  65bf (26047.)
+Entry point address: 0001:0d58
+Link time: 00:00.00

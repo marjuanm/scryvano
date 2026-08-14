@@ -1,0 +1,3 @@
+0.1.0
+
+- A minimally functional implementation that only displays the main window, includes a few menus and a status bar, and can show the "About" dialog.
