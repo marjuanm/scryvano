@@ -8,7 +8,7 @@
 </p>
 
 # What is Scryvano?
-**Scryvano** is a lightweight writing editor compatible 16-32 bits. Its graphical interface is inspired by various text editors from the Windows 3.x era, yet adapted to the need for an editor that supports Markdown, HTML, and other formats—all without losing the essence of those bygone days.
+**Scryvano** is a lightweight writing editor compatible 16-32 bits. It's graphical interface is inspired by various text editors from the Windows 3.x era, yet adapted to the need for an editor that supports Markdown, HTML, and other formats—all without losing the essence of those bygone days.
 
 The project is currently in an early stage and offers a minimally functional interface. Future versions will include graphical interface improvements, the implementation of remaining features, and much more.
 
@@ -28,7 +28,7 @@ The software will be regularly updated to correct any bugs that may appear durin
 
 To install Scryvano on your computer, simply download and unzip the project file; if you are using 32-bit or 64-bit Windows, run the `scryvano.exe` file corresponding to your version.
 
-If you wish to run the 16-bit version, you must run the `scryvano.exe` file on Windows 3.1 (normal or for workgroups) or Windows 9.x. Scryvano has very low system requirements; however, please check <a href="https://software.webxpress.top/projects/scryvano/wiki/prerequisites/" target="_blank">the prerequisites</a> to ensure you meet them and can run our application without issues.
+If you wish to run the 16-bit version, you must run the `scryvano.exe` file on Windows 3.1 (normal or for workgroups, requiere a 386 processor or superior for real hardware) or Windows 9.x. Scryvano has very low system requirements; however, please check <a href="https://software.webxpress.top/projects/scryvano/wiki/prerequisites/" target="_blank">the prerequisites</a> to ensure you meet them and can run our application without issues.
 
 # 🛠️ Compiling from source code:
 
