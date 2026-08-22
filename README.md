@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://software.webxpress.top/projects/scryvano" target="_blank"><img src="https://www.busquedaweb.com/openprojects/scryvano/pet.png?v=2" width="auto" height="331" alt="Scryvano's pet"></a><br>
-    <a href="https://github.com/marjuanm/scryvano/blob/main/CHANGELOG"><img src="https://www.busquedaweb.com/openprojects/scryvano/release.png?v=9" height="20" alt="Release version"></a>
+    <a href="https://github.com/marjuanm/scryvano/blob/main/CHANGELOG"><img src="https://www.busquedaweb.com/openprojects/scryvano/release.png?v=10" height="20" alt="Release version"></a>
     <a href="https://github.com/marjuanm/scryvano/archive/refs/heads/main.zip"><img src="https://www.busquedaweb.com/openprojects/scryvano/latest.png?v=2" height="20" alt="Download current version"></a>
     <a href="https://software.webxpress.top/projects/scryvano/repositories/" target="_blank"><img src="https://www.busquedaweb.com/openprojects/scryvano/download.png?v=3" height="20" alt="Repositories"></a>
     <a href="https://github.com/marjuanm/scryvano/blob/main/LICENSE"><img src="https://www.busquedaweb.com/openprojects/scryvano/license.png" height="20" alt="Project's license"></a>
@@ -14,9 +14,9 @@ The project is currently in an early stage and offers a minimally functional int
 
 It has been successfully tested on Windows 3.1, Windows 95/ME, and other compatible environments (see the <a href="https://software.webxpress.top/projects/scryvano/wiki/installation/#running" target="_blank">project wiki</a> for details). You can track the project's overall progress on our <a href="https://software.webxpress.top/projects/scryvano/roadmap/" target="_blank">roadmap</a>.
 
-# 🚀 Updates for the latest version (0.1.0):
+# 🚀 Updates for the latest version (0.1.1):
 
-Scryvano has a minimally functional interface, with practically all features unfinished. For now, it only opens, loads the necessary configurations internally, and can display the "About" dialog.
+Initial support for language detection; the menu bar can now switch to English or Spanish (languages ​​have not been uploaded yet due to upcoming improvements).
 
 # 📋 License:
 
