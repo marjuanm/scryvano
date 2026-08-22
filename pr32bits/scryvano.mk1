@@ -4,19 +4,19 @@ yvano\pr32bits\main.c .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr32bits
  *wcc386 main.c -i="C:\trabajos\programas\openwatcom/h;C:\trabajos\programas&
-\openwatcom/h/nt" -w4 -e25 -zq -nt=.text -nd=.data -os -ol -or -3r -bt=nt -f&
-o=.obj -mf
+\openwatcom/h/nt" -w4 -e25 -zq -nt=.text -nd=.data -os -ol -or -d2 -3r -bt=n&
+t -fo=.obj -mf
 
-C:\trabajos\programas\scryvano\pr32bits\about.res : C:\trabajos\programas\sc&
-ryvano\dialogs\32bits\about.rc .AUTODEPEND
+C:\trabajos\programas\scryvano\pr32bits\res32.res : C:\trabajos\programas\sc&
+ryvano\resources\res32.rc .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr32bits
- *wrc ..\dialogs\32bits\about.rc -bt=nt -dWIN32 -d_WIN32 -d__NT__ -i="$[:;C:&
-\trabajos\programas\openwatcom/h;C:\trabajos\programas\openwatcom/h/nt" -q -&
-ad -r -fo=about.res
+ *wrc ..\resources\res32.rc -bt=nt -dWIN32 -d_WIN32 -d__NT__ -i="$[:;C:\trab&
+ajos\programas\openwatcom/h;C:\trabajos\programas\openwatcom/h/nt" -q -ad -r&
+ -fo=res32.res
 
 C:\trabajos\programas\scryvano\pr32bits\scryvano.exe : C:\trabajos\programas&
-\scryvano\pr32bits\main.obj C:\trabajos\programas\scryvano\pr32bits\about.re&
+\scryvano\pr32bits\main.obj C:\trabajos\programas\scryvano\pr32bits\res32.re&
 s .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr32bits
@@ -26,8 +26,8 @@ s .AUTODEPEND
  *wlib -q -n -b scryvano.imp 
  @%append scryvano.lk1 LIBR scryvano.imp
 !endif
-!ifneq BLANK "about.res"
- @%append scryvano.lk1 RES about.res
+!ifneq BLANK "res32.res"
+ @%append scryvano.lk1 RES res32.res
 !endif
  *wlink name scryvano sys nt_win option alignment=4096 option objalign=4096 &
 op maxe=25 op q op symf @scryvano.lk1

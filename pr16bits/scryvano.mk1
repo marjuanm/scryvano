@@ -4,17 +4,18 @@ yvano\pr16bits\main.c .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr16bits
  *wcc main.c -i="C:\trabajos\programas\openwatcom/h;C:\trabajos\programas\op&
-enwatcom/h/win" -w4 -e25 -zq -os -s -ol -or -hc -3 -bt=windows -fo=.obj -ml
+enwatcom/h/win" -w4 -e25 -zq -os -s -ol -or -d2 -hc -3 -bt=windows -fo=.obj &
+-ml
 
-C:\trabajos\programas\scryvano\pr16bits\about.res : C:\trabajos\programas\sc&
-ryvano\dialogs\16bits\about.rc .AUTODEPEND
+C:\trabajos\programas\scryvano\pr16bits\res16.res : C:\trabajos\programas\sc&
+ryvano\resources\res16.rc .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr16bits
- *wrc ..\dialogs\16bits\about.rc -bt=windows -i="$[:;C:\trabajos\programas\o&
-penwatcom/h;C:\trabajos\programas\openwatcom/h/win" -q -ad -r -fo=about.res
+ *wrc ..\resources\res16.rc -bt=windows -i="$[:;C:\trabajos\programas\openwa&
+tcom/h;C:\trabajos\programas\openwatcom/h/win" -q -ad -r -fo=res16.res
 
 C:\trabajos\programas\scryvano\pr16bits\scryvano.exe : C:\trabajos\programas&
-\scryvano\pr16bits\main.obj C:\trabajos\programas\scryvano\pr16bits\about.re&
+\scryvano\pr16bits\main.obj C:\trabajos\programas\scryvano\pr16bits\res16.re&
 s .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr16bits
@@ -24,11 +25,11 @@ s .AUTODEPEND
  *wlib -q -n -b scryvano.imp 
  @%append scryvano.lk1 LIBR scryvano.imp
 !endif
-!ifneq BLANK "about.res"
- @%append scryvano.lk1 op resource=about.res
+!ifneq BLANK "res16.res"
+ @%append scryvano.lk1 op resource=res16.res
 !endif
  *wlink name scryvano sys windows option alignment=4096 option objalign=4096&
  op maxe=25 op q op symf @scryvano.lk1
-!ifneq BLANK "about.res"
+!ifneq BLANK "res16.res"
 !endif
 

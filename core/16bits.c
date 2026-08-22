@@ -1,6 +1,6 @@
  /*
   Scryvano - Lightweight text editor
-  Original file name: 32bits.c
+  Original file name: 16bits.c
   Copyright (C) 2026 Juan Manuel Mar Hdz / Scryvano & contributors.
   Licensed under GPL-3.0, see the license file on the root project structure for more information.
   
@@ -20,7 +20,7 @@
   Purpose: Return default font
   Created date: 07/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 07/08/2026
+  Last modified date: 19/08/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT and gemini
 */
@@ -28,7 +28,7 @@ HFONT getDefaultFont()
 {
 
   LOGFONT lf;
-  memset(&lf, 0, sizeof(LOGFONT));
+  memset(&lf, 0, sizeof(lf));
 
   // font -12 o -13. 
   lf.lfHeight = -12; 

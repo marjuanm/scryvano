@@ -1,3 +1,13 @@
+0.1.1
+
+- A module adapted for 16-bit and 32-bit systems (which operate quite differently) was created to retrieve the current system language. Native Windows functions are used for 32-bit systems; however, since these are unavailable for 16-bit systems, the configuration from the win.ini file is used instead.
+
+- Program information was moved from the about.rc file to main.rc to better organize the code.
+
+- The .rc files were reorganized again, and the module containing the 16-bit signature was adjusted because it failed to compile in OpenWatcom.
+
+- The readINIkey function was implemented to read settings from language .ini files, allowing the program's menu bar to display in either English or Spanish (for the time being, the Spanish-English language files are not being uploaded because several improvements are being made to the system).
+
 0.1.0
 
 - A minimally functional implementation that only displays the main window, includes a few menus and a status bar, and can show the "About" dialog.

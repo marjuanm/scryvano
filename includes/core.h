@@ -12,10 +12,10 @@ HWND frmMain;
 HINSTANCE appInst;
 
 char language[SMALL_BUFFER];
-
 char confpath[LARGE_BUFFER];
-char initialfile[LARGE_BUFFER];
 char currentpath[LARGE_BUFFER];
+char translatefile[SMALL_BUFFER];
+char defaultstatusbar[SMALL_BUFFER];
 
 HFONT getDefaultFont();
 int getDefaultFontHeight();

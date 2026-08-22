@@ -1,6 +1,7 @@
 /*
   Scryvano - Lightweight text editor
   Original file name: configuration.c
+	New file name: basic.c
   Copyright (C) 2026 Juan Manuel Mar Hdz / Scryvano & contributors.
   Licensed under GPL-3.0, see the license file on the root project structure for more information.
 
@@ -19,7 +20,7 @@
   Purpose: Return value from string in key=value format
   Created date: 21/06/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 22/06/2026
+  Last modified date: 15/08/2026
   Last modified username: Juan Manuel Mar Hdz.
 */
 void getValueFromKey(char *stream, char *val)
@@ -27,7 +28,7 @@ void getValueFromKey(char *stream, char *val)
 	
 	char *p;
 
-  //ignore full comments
+  // ignore full comments
 	if(stream[0] == ';' || stream[0] == '#')
   {
 		
@@ -36,15 +37,15 @@ void getValueFromKey(char *stream, char *val)
     
 	}
 	
-	//ignore comments section on the line, the line is truncate at found ; or #
+	// ignore comments section on the line, the line is truncate at found ; or #
 	p = strpbrk(stream, ";#");
   if(p != NULL) *p = '\0';
 	
-	//extract value at found '=' on the line
+	// extract value at found '=' on the line
 	
 	p = strchr(stream, '=');
   
-	//no value found to line
+	// no value found to line
 	if(p == NULL)
   {
 		
@@ -53,11 +54,11 @@ void getValueFromKey(char *stream, char *val)
     
 	}
 	
-	//copy the value section
+	// copy the value section
 	p++;
 	while(*p == ' ' || *p == '\t') p++;
 
-	memset(val, 0, SMALL_BUFFER);
+	val[0] = '\0';
   strncpy(val, p, SMALL_BUFFER - 1);
   val[SMALL_BUFFER - 1] = '\0';
 
@@ -102,10 +103,10 @@ void getCorrectValueToLoad(char *stream, char *val)
 }
 
 /* 
-  Purpose: Return default shellDOS configuration
+  Purpose: Return default Scryvano configuration
   Created date: 08/06/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 13/08/2026
+  Last modified date: 15/08/2026
   Last modified username: Juan Manuel Mar Hdz.
 */
 struct CONFIGURATION getDefaultConfiguration()
@@ -113,7 +114,7 @@ struct CONFIGURATION getDefaultConfiguration()
 	
 	struct CONFIGURATION conf;
     
-  memset(conf.language, 0, SMALL_BUFFER);
+  conf.language[0] = '\0';
   strncpy(conf.language, "en", sizeof(conf.language) - 1);
 	conf.language[sizeof(conf.language) - 1] = '\0';
   
@@ -122,22 +123,23 @@ struct CONFIGURATION getDefaultConfiguration()
 }
 
 /* 
-  Purpose: Load shellDOS configuration from file
+  Purpose: Load Scryvano configuration from file
   Created date: 07/07/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 13/08/2026
+  Last modified date: 15/08/2026
   Last modified username: Juan Manuel Mar Hdz.
 */
 void loadConfiguration()
 {
-	
+
 	int exists, itmp;
+	char file[LARGE_BUFFER];
 	FILE *fp = fopen(confpath, "r");
 	
 	if(fp != NULL)
   {
 		
-		//load configuration from scryvano.cfg, every line start with key=value
+		// load configuration from scryvano.cfg, every line start with key=value
 		while(fgets(line, SMALL_BUFFER, fp) != NULL)
 	  {
 			
@@ -153,7 +155,7 @@ void loadConfiguration()
 					
 					getCorrectValueToLoad(value, stmp);
 					
-					memset(conf.language, 0, SMALL_BUFFER);
+					conf.language[0] = '\0';
 					strncpy(conf.language, stmp, sizeof(conf.language) - 1);
 					conf.language[sizeof(conf.language) - 1] = '\0';
 					
@@ -170,13 +172,42 @@ void loadConfiguration()
 	else
 	  exists = FALSE;
 
-	//create configuration file
+	// create configuration file
 	if(exists == FALSE)
 	{
 		
 		fp = fopen(confpath, "w");
-	
-    //if not fail then write on the created file (fail to write on cdrom by example)	
+		getLanguage(conf.language);
+
+		// check if language file exits, then load in the configuration, else load english
+		
+		if(stricmp(conf.language, "en") != 0) // check if only the language not is english, english is by default
+		{
+			
+			findLanguageFile(conf.language, file);
+			
+			if(file[0] == '\0')
+			{
+				
+				strcpy(conf.language, "en");
+				translatefile[0] = '\0';
+				
+			}
+			else
+			{
+				
+				translatefile[0] = '\0';
+				strncpy(translatefile, file, sizeof(translatefile) - 1);
+			
+			}
+			
+		}
+		else
+			translatefile[0] = '\0';
+		
+		// Load regional language (if it exists)
+
+		// if not fail then write on the created file (fail to write on cdrom by example)	
 		if(fp != NULL)
 		{
 			
@@ -187,5 +218,35 @@ void loadConfiguration()
 		}
 		
 	}
-	
+	else
+	{
+		
+		// check if language file exits, then load in the configuration, else load english
+		
+		if(stricmp(conf.language, "en") != 0) // check if only the language not is english, english is by default
+		{
+			
+			findLanguageFile(conf.language, file);
+			
+			if(file[0] == '\0')
+			{
+				
+				strcpy(conf.language, "en");
+				translatefile[0] = '\0';
+				
+			}
+			else
+			{
+				
+				translatefile[0] = '\0';
+				strncpy(translatefile, file, sizeof(translatefile) - 1);
+			
+			}
+			
+		}
+		else
+			translatefile[0] = '\0';
+		
+	}
+
 }

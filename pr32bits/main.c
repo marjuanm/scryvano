@@ -16,15 +16,21 @@
 
 #include "../includes/constants.h"
 #include "../includes/structures.h"
+#include "../includes/ini.h"
 #include "../includes/core.h"
-#include "../includes/configuration.h"
 #include "../includes/dialogs/32bits.h"
 #include "../includes/fs-operations/file.h"
+#include "../includes/configuration/basic.h"
+#include "../includes/configuration/language.h"
+
 #include "../includes/components/statusbar.h"
 
+#include "../core/ini.c"
 #include "../core/32bits.c"
-#include "../core/configuration.c"
 #include "../core/fs-operations/file.c"
+#include "../core/configuration/basic.c"
+#include "../core/configuration/language.c"
+#include "../core/configuration/32bits.c"
 
 #include "../core/components/32bits.c"
 #include "../core/dialogs/32bits/about.c"
@@ -46,7 +52,7 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 13/08/2026
+  Last modified date: 21/08/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -54,12 +60,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	
 	int len;
-	char *end;
-	char *p, *start;
-	WNDCLASS wc = {0};
 	MSG msg;
 	HWND hwnd;
-	
+	WNDCLASS wc = {0};
+	char *end, *p, *start;
+	char menutext[MEDIUM_BUFFER], initialfile[LARGE_BUFFER];
+
 	// initialize path
 	
 	GetModuleFileName(NULL, currentpath, sizeof(currentpath));
@@ -133,35 +139,63 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// load configuration
 	
 	conf = getDefaultConfiguration();
-	loadConfiguration();
+	loadConfiguration(); // get configuration from .cfg file, load in the main structure and set translation file path in translatefile var
+	if(translatefile[0] == '\0') strncpy(conf.language, "en", sizeof(conf.language) - 1);
 	
+	// load default statusbar string
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(defaultstatusbar, "Ready", sizeof(defaultstatusbar) - 1);
+	else
+	  readINIkey("status_bar", "defaulttext", defaultstatusbar, sizeof(defaultstatusbar), translatefile);
+
   // create main menu structure
 
 	mnuMenu = CreateMenu();
 
 	/* File */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&File", sizeof(menutext) - 1);
+	else
+		readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
 
 	mnuFile = CreatePopupMenu();
 	AppendMenu(mnuFile, MF_STRING, 1001, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuFile, "&File");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuFile, menutext);
 
 	/* Edit */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Edit", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "edit", menutext, sizeof(menutext), translatefile);
 
 	mnuEdit = CreatePopupMenu();
 	AppendMenu(mnuEdit, MF_STRING, 1002, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuEdit, "&Edit");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuEdit, menutext);
 
 	/* Find */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Find", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "find", menutext, sizeof(menutext), translatefile);
 
 	mnuFind = CreatePopupMenu();
 	AppendMenu(mnuFind, MF_STRING, 1003, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuFind, "&Find");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuFind, menutext);
 
 	/* View */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&View", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "view", menutext, sizeof(menutext), translatefile);
 
 	mnuView = CreatePopupMenu();
 	AppendMenu(mnuView, MF_STRING, 1004, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuView, "&View");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuView, menutext);
 
 	/* Document */
 
@@ -175,8 +209,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	AppendMenu(mnuDocument, MF_POPUP, (UINT_PTR)mnuCharacter, "&Character");
 	AppendMenu(mnuDocument, MF_POPUP, (UINT_PTR)mnuParagraph, "&Paragraph");
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Document", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "document", menutext, sizeof(menutext), translatefile);
 
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuDocument, "&Document");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuDocument, menutext);
 
 	/* Execute */
 
@@ -189,20 +228,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	AppendMenu(mnuPlugins, MF_STRING, 1008, "Sample");
 
 	AppendMenu(mnuExecute, MF_POPUP, (UINT_PTR)mnuPlugins, "P&lugins");
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "execute", menutext, sizeof(menutext), translatefile);
 
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuExecute, "E&xecute");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuExecute, menutext);
 
 	/* Window */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Window", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "window", menutext, sizeof(menutext), translatefile);
 
 	mnuWindow = CreatePopupMenu();
 	AppendMenu(mnuWindow, MF_STRING, 1009, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuWindow, "&Window");
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuWindow, menutext);
 
 	/* Help */
 
 	mnuHelp = CreatePopupMenu();
 	AppendMenu(mnuHelp, MF_STRING, IDD_ABOUT, "&About");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuHelp, "&Help");
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Help", sizeof(menutext) - 1);
+	else
+	  readINIkey("menu_list", "help", menutext, sizeof(menutext), translatefile);
+
+	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuHelp, menutext);
 
   // initialize window
 	
@@ -242,7 +297,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 07/08/2026
+  Last modified date: 21/08/2026
   Last modified username: Juan Manuel Mar Hdz.
 */
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -255,7 +310,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 			sbMain = StatusBar_Create(
 				hwnd, 
-				"Ready",
+				defaultstatusbar,
 				FALSE);
 			
       return 0;

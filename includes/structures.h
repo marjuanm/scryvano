@@ -15,16 +15,12 @@
   https://github.com/marjuanm/shdos
 */
 
-#include "constants.h"
-
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
 
 struct CONFIGURATION
-{
-	
+{	
 	char language[SMALL_BUFFER];
-	
 };
 
 #endif
