@@ -1,0 +1,2 @@
+#include "info32.rc"
+#include "../dialogs/32bits/about.rc"

@@ -1,0 +1,2 @@
+#include "info16.rc"
+#include "../dialogs/16bits/about.rc"
