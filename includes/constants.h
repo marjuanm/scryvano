@@ -20,12 +20,19 @@
 
 #define PROJECT_NAME "Scryvano"
 #define PROJECT_SHORT_NAME "Scryvano"
-#define PROJECT_VERSION "0.1.1"
+#define PROJECT_VERSION "0.1.2"
 #define PROJECT_YEAR "2026"
 #define TEAM_NAME "Scryvano & Contributors"
 
 #define LARGE_BUFFER 999
 #define MEDIUM_BUFFER 257
 #define SMALL_BUFFER 66
+
+// program objects identifiers
+
+#define IDD_NEW 1001
+#define IDD_EXIT 1002
+
+#define IDI_APP_ICON  10000
 
 #endif

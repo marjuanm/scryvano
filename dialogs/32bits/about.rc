@@ -1,8 +1,10 @@
 #include <windows.h>
 #include "../about.h"
+#include "../../includes/constants.h"
 
 1 24 "scryvano.manifest"
 
 IDB_LOGO BITMAP "../images/logo.bmp"
+IDI_APP_ICON ICON "../images/ico32-8bits.ico"
 
 #include "about.DLG"

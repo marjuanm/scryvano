@@ -8,6 +8,6 @@
 #ifndef INI_H
 #define INI_H
 
-void readINIkey(char *, char *, char *, int, char *);
+int readINIkey(char *, char *, char *, int, char *);
 
 #endif

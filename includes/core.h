@@ -8,7 +8,7 @@
 #ifndef CORE_H
 #define CORE_H
 
-HWND frmMain;
+HWND IDD_FMAIN;
 HINSTANCE appInst;
 
 char language[SMALL_BUFFER];

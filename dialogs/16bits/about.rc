@@ -1,6 +1,8 @@
 #include <windows.h>
 #include "../about.h"
+#include "../../includes/constants.h"
 
 IDB_LOGO BITMAP "../images/logo.bmp"
+IDI_APP_ICON ICON "../images/ico32-4bits.ico"
 
 #include "about.DLG"

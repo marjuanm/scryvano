@@ -9,7 +9,7 @@
   Purpose: Create about dialog
   Created date: 07/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 08/08/2026
+  Last modified date: 23/08/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT and gemini
 */
@@ -20,11 +20,12 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 	HFONT hFont;
 	HBITMAP hBmp;
 	int x, y, width;
-	char bufferText[128];
 	HWND hParent, hStatic;
 	RECT rcParent, rcDlg, rect;
-	int parentWidth, parentHeight;
-  int dlgWidth, dlgHeight, fontHeight;
+	char bufferText[MEDIUM_BUFFER];
+	char translated[MEDIUM_BUFFER];
+	int dlgWidth, dlgHeight, fontHeight;
+	int parentWidth, parentHeight, status;
   
   switch(msg)
   {
@@ -32,6 +33,34 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_INITDIALOG:
 				
 			hParent = (HWND)lParam;
+			
+			// set window title
+			
+			if(stricmp(conf.language, "en") == 0)
+				strncpy(translated, "About of Scryvano", sizeof(translated) - 1);
+			else
+			{
+				
+				status = readINIkey("about_dialog", "caption", translated, sizeof(translated), translatefile);
+			  if(status == FALSE) strncpy(translated, "About of Scryvano", sizeof(translated) - 1);
+				
+			}
+			
+			SetWindowText(hDlg, translated);
+			
+			// set close button title
+			
+			if(stricmp(conf.language, "en") == 0)
+				strncpy(translated, "Close", sizeof(translated) - 1);
+			else
+			{
+				
+				status = readINIkey("about_dialog", "close", translated, sizeof(translated), translatefile);
+			  if(status == FALSE) strncpy(translated, "Close", sizeof(translated) - 1);
+				
+			}
+			
+			SetDlgItemText(hDlg, IDD_BUTTON_ABOUT, translated);
 			
 			// adjust text field to font size
 			

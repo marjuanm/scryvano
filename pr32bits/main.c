@@ -3,6 +3,8 @@
   Original file name: main.c
   Copyright (C) 2026 Juan Manuel Mar Hdz / Scryvano & contributors.
   Licensed under GPL-3.0, see the license file on the root project structure for more information.
+  Special thanks to the Flaticon project for the icon used for the Scryvano executable.
+	You can view the original image at https://www.flaticon.es/icono-gratis/pluma_11073685?term=pluma+de+escribir&page=1&position=2&origin=search&related_id=11073685
 */
 
 #include <io.h>
@@ -36,15 +38,13 @@
 #include "../core/dialogs/32bits/about.c"
 #include "../core/components/statusbar.c"
 
-HMENU mnuMenu;
+HMENU IDD_MENU;
 
-HMENU mnuFile, mnuEdit, mnuFind, mnuView;
-HMENU mnuCharacter, mnuParagraph, mnuDocument;
-HMENU mnuExecute, mnuPlugins, mnuWindow, mnuHelp;
+HMENU IDD_MFILE, IDD_MEDIT, IDD_MFIND, IDD_MVIEW;
+HMENU IDD_MCHARACTER, IDD_MPARAGRAPH, IDD_MDOCUMENT;
+HMENU IDD_MEXECUTE, IDD_MPLUGINS, IDD_MWINDOW, IDD_MHELP;
 
-HMENU mnuAbout;
-
-HWND sbMain;
+HWND IDD_SMAIN;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -52,7 +52,7 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 21/08/2026
+  Last modified date: 24/08/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -64,6 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HWND hwnd;
 	WNDCLASS wc = {0};
 	char *end, *p, *start;
+	int sw, sh, w, h, x, y, status;
 	char menutext[MEDIUM_BUFFER], initialfile[LARGE_BUFFER];
 
 	// initialize path
@@ -129,7 +130,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   wc.style = CS_HREDRAW | CS_VREDRAW;
   wc.lpfnWndProc = WndProc;
   wc.hInstance = hInstance;
-  wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+  wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_ICON));
   wc.hCursor = LoadCursor(NULL, IDC_ARROW);
   wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
   wc.lpszClassName = "SCRYVANO";
@@ -147,117 +148,218 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(defaultstatusbar, "Ready", sizeof(defaultstatusbar) - 1);
 	else
-	  readINIkey("status_bar", "defaulttext", defaultstatusbar, sizeof(defaultstatusbar), translatefile);
+	{
+		
+		status = readINIkey("status_bar", "defaulttext", defaultstatusbar, sizeof(defaultstatusbar), translatefile);
+		if(status == FALSE) strncpy(defaultstatusbar, "Ready", sizeof(defaultstatusbar) - 1);
+				
+	}
 
   // create main menu structure
 
-	mnuMenu = CreateMenu();
+	IDD_MENU = CreateMenu();
 
 	/* File */
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&File", sizeof(menutext) - 1);
 	else
-		readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&File", sizeof(menutext) - 1);
+				
+	}
 
-	mnuFile = CreatePopupMenu();
-	AppendMenu(mnuFile, MF_STRING, 1001, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuFile, menutext);
+	IDD_MFILE = CreatePopupMenu();
+	
+	/* submenu new */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&New", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "new", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&New", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDD_MFILE, MF_STRING, IDD_NEW, menutext);
+	
+	/* submenu new */
+	
+	/* submenu exit */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "Ex&it", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "exit", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "Ex&it", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDD_MFILE, MF_SEPARATOR, 0, NULL);
+	
+	AppendMenu(IDD_MFILE, MF_STRING, IDD_EXIT, menutext);
+	
+	/* submenu exit */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&File", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&File", sizeof(menutext) - 1);
+				
+	}
+
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MFILE, menutext);
 
 	/* Edit */
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Edit", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "edit", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "edit", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Edit", sizeof(menutext) - 1);
+				
+	}
 
-	mnuEdit = CreatePopupMenu();
-	AppendMenu(mnuEdit, MF_STRING, 1002, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuEdit, menutext);
+	IDD_MEDIT = CreatePopupMenu();
+	AppendMenu(IDD_MEDIT, MF_STRING, 1002, "Sample");
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MEDIT, menutext);
 
 	/* Find */
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Find", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "find", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "find", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Find", sizeof(menutext) - 1);
+				
+	}
 
-	mnuFind = CreatePopupMenu();
-	AppendMenu(mnuFind, MF_STRING, 1003, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuFind, menutext);
+	IDD_MFIND = CreatePopupMenu();
+	AppendMenu(IDD_MFIND, MF_STRING, 1003, "Sample");
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MFIND, menutext);
 
 	/* View */
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&View", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "view", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "view", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&View", sizeof(menutext) - 1);
+				
+	}
 
-	mnuView = CreatePopupMenu();
-	AppendMenu(mnuView, MF_STRING, 1004, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuView, menutext);
+	IDD_MVIEW = CreatePopupMenu();
+	AppendMenu(IDD_MVIEW, MF_STRING, 1004, "Sample");
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MVIEW, menutext);
 
 	/* Document */
 
-	mnuDocument = CreatePopupMenu();
+	IDD_MDOCUMENT = CreatePopupMenu();
 
-	mnuCharacter = CreatePopupMenu();
-	AppendMenu(mnuCharacter, MF_STRING, 1005, "Sample");
+	IDD_MCHARACTER = CreatePopupMenu();
+	AppendMenu(IDD_MCHARACTER, MF_STRING, 1005, "Sample");
 
-	mnuParagraph = CreatePopupMenu();
-	AppendMenu(mnuParagraph, MF_STRING, 1006, "Sample");
+	IDD_MPARAGRAPH = CreatePopupMenu();
+	AppendMenu(IDD_MPARAGRAPH, MF_STRING, 1006, "Sample");
 
-	AppendMenu(mnuDocument, MF_POPUP, (UINT_PTR)mnuCharacter, "&Character");
-	AppendMenu(mnuDocument, MF_POPUP, (UINT_PTR)mnuParagraph, "&Paragraph");
+	AppendMenu(IDD_MDOCUMENT, MF_POPUP, (UINT_PTR)IDD_MCHARACTER, "&Character");
+	AppendMenu(IDD_MDOCUMENT, MF_POPUP, (UINT_PTR)IDD_MPARAGRAPH, "&Paragraph");
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Document", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "document", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "document", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Document", sizeof(menutext) - 1);
+				
+	}
 
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuDocument, menutext);
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MDOCUMENT, menutext);
 
 	/* Execute */
 
-	mnuExecute = CreatePopupMenu();
+	IDD_MEXECUTE = CreatePopupMenu();
 
-	AppendMenu(mnuExecute, MF_STRING, 1007, "Sample");
-	AppendMenu(mnuExecute, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDD_MEXECUTE, MF_STRING, 1007, "Sample");
+	AppendMenu(IDD_MEXECUTE, MF_SEPARATOR, 0, NULL);
 
-	mnuPlugins = CreatePopupMenu();
-	AppendMenu(mnuPlugins, MF_STRING, 1008, "Sample");
+	IDD_MPLUGINS = CreatePopupMenu();
+	AppendMenu(IDD_MPLUGINS, MF_STRING, 1008, "Sample");
 
-	AppendMenu(mnuExecute, MF_POPUP, (UINT_PTR)mnuPlugins, "P&lugins");
+	AppendMenu(IDD_MEXECUTE, MF_POPUP, (UINT_PTR)IDD_MPLUGINS, "P&lugins");
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "execute", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "execute", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
+				
+	}
 
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuExecute, menutext);
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MEXECUTE, menutext);
 
 	/* Window */
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Window", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "window", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "window", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Window", sizeof(menutext) - 1);
+				
+	}
 
-	mnuWindow = CreatePopupMenu();
-	AppendMenu(mnuWindow, MF_STRING, 1009, "Sample");
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuWindow, menutext);
+	IDD_MWINDOW = CreatePopupMenu();
+	AppendMenu(IDD_MWINDOW, MF_STRING, 1009, "Sample");
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MWINDOW, menutext);
 
 	/* Help */
 
-	mnuHelp = CreatePopupMenu();
-	AppendMenu(mnuHelp, MF_STRING, IDD_ABOUT, "&About");
+	IDD_MHELP = CreatePopupMenu();
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&About of Scryvano", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_about", "about", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&About of Scryvano", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDD_MHELP, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDD_MHELP, MF_STRING, IDD_ABOUT, menutext);
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Help", sizeof(menutext) - 1);
 	else
-	  readINIkey("menu_list", "help", menutext, sizeof(menutext), translatefile);
+	{
+		
+		status = readINIkey("menu_list", "help", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Help", sizeof(menutext) - 1);
+				
+	}
 
-	AppendMenu(mnuMenu, MF_POPUP, (UINT_PTR)mnuHelp, menutext);
+	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MHELP, menutext);
 
   // initialize window
 	
@@ -272,12 +374,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     640,
     480,
     NULL,
-    mnuMenu,
+    IDD_MENU,
     hInstance,
     NULL);
 		
-	frmMain = hwnd;
-
+	IDD_FMAIN = hwnd;
+	
   ShowWindow(hwnd, nCmdShow);
   UpdateWindow(hwnd);
 
@@ -308,7 +410,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_CREATE:
 
-			sbMain = StatusBar_Create(
+			IDD_SMAIN = StatusBar_Create(
 				hwnd, 
 				defaultstatusbar,
 				FALSE);
@@ -317,13 +419,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_SIZE:
 
-      StatusBar_Resize(hwnd, sbMain);
+      StatusBar_Resize(hwnd, IDD_SMAIN);
 			return 0;
 			
 		case WM_COMMAND:
     
 			switch(LOWORD(wParam))
 			{
+				
+				case IDD_EXIT:
+        {
+					
+					SendMessage(hwnd, WM_CLOSE, 0, 0);
+          return 0;
+        
+				}
 				
         case IDD_ABOUT:
         {

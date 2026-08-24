@@ -1,3 +1,19 @@
+0.1.2
+
+- Work began on the operating system language detection system; the 32-bit version works perfectly—even allowing the retrieval of regional settings—but since this functionality does not exist in Win16, the module will have to be rewritten.
+
+- Program information was moved from "about.rc" to "main.rc" to organize the code.
+
+- The ".rc" files were reorganized again, and the module containing the 16-bit signature was adjusted because it would not compile in OpenWatcom; language detection logic was separated for 16-bit and 32-bit versions, as they operate differently.
+
+- The "readINIkey" function was implemented to read settings from language INI files, allowing the program's menu bar to display in either English or Spanish.
+
+- The "About" dialog now detects the current language and applies the translation for the title and the close button.
+
+- An "Exit" menu was implemented that successfully closes the application, along with a "New" menu (currently non-functional) and menu separators.
+
+- An icon was assigned to the executable, and the main window now displays it in the top-left corner; in the 16-bit version, it only appears when the window is minimized.
+
 0.1.1
 
 - A module adapted for 16-bit and 32-bit systems (which operate quite differently) was created to retrieve the current system language. Native Windows functions are used for 32-bit systems; however, since these are unavailable for 16-bit systems, the configuration from the win.ini file is used instead.

@@ -6,12 +6,12 @@ Licensed under GPL-3.0, see the license file on the root project structure for m
 */
 
 /*
-Purpose: Create about dialog
-Created date: 08/08/2026
-Created by username: Juan Manuel Mar Hdz.
-Last modified date: 13/08/2026
-Last modified username: Juan Manuel Mar Hdz.
-Thanks to chatGPT and gemini
+  Purpose: Create about dialog
+  Created date: 08/08/2026
+  Created by username: Juan Manuel Mar Hdz.
+  Last modified date: 23/08/2026
+  Last modified username: Juan Manuel Mar Hdz.
+  Thanks to chatGPT and gemini
 */
 BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -22,12 +22,13 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
   HDC hdcMem;
   int x, y, width;
   char bufferText[128];
+  char translated[MEDIUM_BUFFER];
   HBITMAP hBmp, hOldBmp;
   int parentWidth, parentHeight;
-	int bordersWidth, bordersHeight;
-	RECT rcParent, rect, rcCtrl, rcDlgOrigin;
-  int dlgWidth, dlgHeight, fontHeight;
+	int dlgWidth, dlgHeight, fontHeight;
+	int bordersWidth, bordersHeight, status;
 	HWND hParent, hStatic, hBtn, hCtrl;
+	RECT rcParent, rect, rcCtrl, rcDlgOrigin;
 
   switch(msg)
   {
@@ -36,8 +37,36 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
     {
 			
 			hParent = (HWND)lParam;
+			
+			// set window title
+			
+			if(stricmp(conf.language, "en") == 0)
+				strncpy(translated, "About of Scryvano", sizeof(translated) - 1);
+			else
+			{
+				
+				status = readINIkey("about_dialog", "caption", translated, sizeof(translated), translatefile);
+			  if(status == FALSE) strncpy(translated, "About of Scryvano", sizeof(translated) - 1);
+				
+			}
 
-      // adjust font size
+			SetWindowText(hDlg, translated);
+			
+			// set close button title
+			
+			if(stricmp(conf.language, "en") == 0)
+				strncpy(translated, "Close", sizeof(translated) - 1);
+			else
+			{
+				
+				status = readINIkey("about_dialog", "close", translated, sizeof(translated), translatefile);
+			  if(status == FALSE) strncpy(translated, "Close", sizeof(translated) - 1);
+				
+			}
+			
+			SetDlgItemText(hDlg, IDD_BUTTON_ABOUT, translated);
+			
+			// adjust text field to font size
       
 			hFont = getDefaultFont();
 			
