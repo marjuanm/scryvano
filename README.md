@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://software.webxpress.top/projects/scryvano" target="_blank"><img src="https://www.busquedaweb.com/openprojects/scryvano/pet.png?v=2" width="auto" height="331" alt="Scryvano's pet"></a><br>
-    <a href="https://github.com/marjuanm/scryvano/blob/main/CHANGELOG"><img src="https://www.busquedaweb.com/openprojects/scryvano/release.png?v=10" height="20" alt="Release version"></a>
+    <a href="https://github.com/marjuanm/scryvano/blob/main/CHANGELOG"><img src="https://www.busquedaweb.com/openprojects/scryvano/release.png?v=11" height="20" alt="Release version"></a>
     <a href="https://github.com/marjuanm/scryvano/archive/refs/heads/main.zip"><img src="https://www.busquedaweb.com/openprojects/scryvano/latest.png?v=2" height="20" alt="Download current version"></a>
     <a href="https://software.webxpress.top/projects/scryvano/repositories/" target="_blank"><img src="https://www.busquedaweb.com/openprojects/scryvano/download.png?v=3" height="20" alt="Repositories"></a>
     <a href="https://github.com/marjuanm/scryvano/blob/main/LICENSE"><img src="https://www.busquedaweb.com/openprojects/scryvano/license.png" height="20" alt="Project's license"></a>
@@ -14,9 +14,9 @@ The project is currently in an early stage and offers a minimally functional int
 
 It has been successfully tested on Windows 3.1, Windows 95/ME, and other compatible environments (see the <a href="https://software.webxpress.top/projects/scryvano/wiki/installation/#running" target="_blank">project wiki</a> for details). You can track the project's overall progress on our <a href="https://software.webxpress.top/projects/scryvano/roadmap/" target="_blank">roadmap</a>.
 
-# 🚀 Updates for the latest version (0.1.1):
+# 🚀 Updates for the latest version (0.1.2):
 
-Initial support for language detection; the menu bar can now switch to English or Spanish (languages ​​have not been uploaded yet due to upcoming improvements).
+Scryvano now has an icon associated with both the executable and the main window. All menus in the top bar have also been translated.
 
 # 📋 License:
 
@@ -49,6 +49,16 @@ If you don't wish to purchase a commercial license but would like to support thi
 We welcome bug reports and feature suggestions from all users. Confirmed issues will be reviewed and addressed as development progresses. While every report is appreciated, requests from project sponsors and commercial license holders may receive higher priority when scheduling bug fixes, new features, and technical support.
 
 Please refer to the <a href="https://software.webxpress.top/projects/scryvano/wiki/how-to-contribute/#community" target="_blank">corresponding section</a> of the Wiki for a detailed explanation of our support and prioritization policy.
+
+# 🤝 Acknowledgments to other projects
+
+We extend special thanks to other projects from which we have adopted concepts—such as source code (though adapted to Scryvano's needs rather than ported exactly as-is)—and other necessary resources.
+
+[**Notepad**](https://github.com/osfree-project/notepad) is part of the [OSFree project](https://github.com/osfree-project); specifically, it's distributed under the LGPL license. Scryvano has used snippets from various files, adapting them to the project's needs for its implementation.
+
+[**Flaticon**](https://www.flaticon.com) it's one of the world's largest libraries of icons and stickers. It offers millions of graphic resources in various formats for free—provided the author is credited—along with a paid option that does not require attribution.
+
+The files (or fragments thereof) or resources used by these projects are specified in the Scryvano source code files where they are used.
 
 # 🔗 Useful resources:
 
