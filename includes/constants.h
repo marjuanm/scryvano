@@ -11,7 +11,7 @@
 	Portions derived from the original work have been modified and incorporated into Scryvano project.
  
   Copyright notices and attribution for the original work are retained where applicable.
-  Thanks to the ShellDOS project and its contributors for their work and reference implementation.
+  Thanks to the ShellDOS project and contributors for their work and reference implementation.
   https://github.com/marjuanm/shdos
 */
 
@@ -20,7 +20,7 @@
 
 #define PROJECT_NAME "Scryvano"
 #define PROJECT_SHORT_NAME "Scryvano"
-#define PROJECT_VERSION "0.1.2"
+#define PROJECT_VERSION "0.1.3"
 #define PROJECT_YEAR "2026"
 #define TEAM_NAME "Scryvano & Contributors"
 

@@ -33,7 +33,6 @@
 #include "../core/configuration/language.c"
 #include "../core/configuration/16bits.c"
 
-#include "../core/components/16bits.c"
 #include "../core/dialogs/16bits/about.c"
 #include "../core/components/statusbar.c"
 
@@ -51,7 +50,7 @@ LRESULT FAR PASCAL WndProc(HWND, UINT, WPARAM, LPARAM);
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 24/08/2026
+  Last modified date: 06/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -411,55 +410,71 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 21/08/2026
+  Last modified date: 05/09/2026
   Last modified username: Juan Manuel Mar Hdz.
+	Thanks to chatgpt and gemini
 */
 LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	
 	HDC hdc;
+	int width, height;
 	FARPROC lpfnAbout;
 	
 	switch(msg)
   {
 
-    case WM_CREATE:
+		case WM_CREATE:
 
-			IDD_SMAIN = StatusBar_Create(
+			IDD_SMAIN = StatusBarCreate(
 				hwnd, 
-				defaultstatusbar,
-				TRUE);
-			
+				appInst, 
+				0, 
+				STATUSBAR_SIMPLE, 
+				STATUSBAR_SMALL_HEIGHT
+			);
+
       return 0;
 
     case WM_SIZE:
 
-      StatusBar_Resize(hwnd, IDD_SMAIN);
+			width = LOWORD(lParam);
+      height = HIWORD(lParam);
+		
+			StatusBarResize(IDD_SMAIN, width, height);
 			return 0;
-			
+					
 		case WM_CTLCOLOR:
 			
-			hdc = (HDC)wParam;
-
 			if((HWND)lParam == IDD_SMAIN)
 			{
         
-				SetBkColor(hdc, RGB(255,255,255));
-        SetTextColor(hdc, RGB(0,0,0));
+				hdc = (HDC)wParam;
+        SetBkColor(hdc, RGB(255, 255, 255));
+        SetTextColor(hdc, RGB(0, 0, 0));
         return (LRESULT)GetStockObject(WHITE_BRUSH);
-    
+				
 			}
-			
+
 			return 0;
 			
-	    case WM_COMMAND:
+	  case WM_COMMAND:
     
 			switch(LOWORD(wParam))
 			{
 				
+				case IDD_NEW:
+        {
+					
+					//StatusBarSetText(IDD_STATUSBAR, "Prueba statusbar");
+          return 0;
+        
+				}
+				
         case IDD_EXIT:
         {
 					
+					//StatusBarClearFields(IDD_STATUSBAR);
 					SendMessage(hwnd, WM_CLOSE, 0, 0);
           return 0;
         
@@ -470,7 +485,7 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					
 					lpfnAbout = MakeProcInstance((FARPROC)AboutDlgProc, appInst);
 					
-					if (lpfnAbout != NULL)
+					if(lpfnAbout != NULL)
 					{
         
 						DialogBoxParam(
@@ -492,11 +507,21 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
     
 			return 0;
-		
+			
 		case WM_DESTROY:
       
-      PostQuitMessage(0);
-      return 0;
+			if(IDD_MENU)
+      {
+        
+				DestroyMenu(IDD_MENU);
+        IDD_MENU = 0;
+    
+			}
+
+			UnregisterClass(StatusBarClassName, appInst);
+			PostQuitMessage(0);
+			
+			return 0;
     
 	}
 

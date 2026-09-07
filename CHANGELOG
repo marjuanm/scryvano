@@ -1,3 +1,13 @@
+0.1.3
+
+- The icons were redesigned for 16-bit and 32-bit versions; the application icon for the 16-bit version drew inspiration from the color scheme used in Notepad and WinFile, whereas the 32-bit version—having a wider color palette—looks different. Additionally, a container format was chosen to store multiple resolutions within a single .ico file; the possibility of porting this feature to the 16-bit application will be considered.
+
+- A simple status bar was implemented, using the WinVi project as a reference. However, this was not a direct code adaptation but rather an incorporation of general concepts; furthermore, the use of pointers was avoided, as their use had previously caused Windows 3.1 to crash upon exiting after repeated program executions.
+
+- The project's .ico files were redesigned again; the 32-bit .ico is now a container holding both 32x32 and 16x16 icons. The code was improved to provide automatic support, allowing Scryvano to automatically select the appropriate icon for display.
+
+- Code was added to the manifest file for the 32-bit version because the text in the status bar and menus appeared blurry.
+
 0.1.2
 
 - Work began on the operating system language detection system; the 32-bit version works perfectly—even allowing the retrieval of regional settings—but since this functionality does not exist in Win16, the module will have to be rewritten.

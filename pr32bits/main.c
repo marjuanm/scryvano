@@ -34,7 +34,6 @@
 #include "../core/configuration/language.c"
 #include "../core/configuration/32bits.c"
 
-#include "../core/components/32bits.c"
 #include "../core/dialogs/32bits/about.c"
 #include "../core/components/statusbar.c"
 
@@ -52,9 +51,9 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 24/08/2026
+  Last modified date: 06/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
-  Thanks to chatGPT
+  Thanks to chatGPT and gemini
 */
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -62,7 +61,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int len;
 	MSG msg;
 	HWND hwnd;
-	WNDCLASS wc = {0};
+	//WNDCLASS wc = {0};
+	WNDCLASSEX wc = {0}; // support to multiple icons size
 	char *end, *p, *start;
 	int sw, sh, w, h, x, y, status;
 	char menutext[MEDIUM_BUFFER], initialfile[LARGE_BUFFER];
@@ -127,15 +127,34 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
   InitCommonControls();
 
+	wc.cbSize = sizeof(WNDCLASSEX); // to enable use several icons size
   wc.style = CS_HREDRAW | CS_VREDRAW;
   wc.lpfnWndProc = WndProc;
   wc.hInstance = hInstance;
-  wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_ICON));
-  wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+  //wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_LARGE_ICON));
+	//wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_SMALL_ICON), GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
+  wc.hIcon = (HICON)LoadImage(
+    hInstance, 
+    MAKEINTRESOURCE(IDI_APP_ICON), 
+    IMAGE_ICON, 
+    GetSystemMetrics(SM_CXICON), 
+    GetSystemMetrics(SM_CYICON), 
+    LR_CREATEDIBSECTION 
+	); // large icon, taskbar and ALT+TAB
+	wc.hIconSm = (HICON)LoadImage(
+    hInstance, 
+    MAKEINTRESOURCE(IDI_APP_ICON), 
+    IMAGE_ICON, 
+    GetSystemMetrics(SM_CXSMICON), 
+    GetSystemMetrics(SM_CYSMICON), 
+    LR_CREATEDIBSECTION 
+	); // small icon, window title
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
   wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
   wc.lpszClassName = "SCRYVANO";
 
-  RegisterClass(&wc);
+  //RegisterClass(&wc);
+	RegisterClassEx(&wc); // support to multiple icons size
 	
 	// load configuration
 	
@@ -371,8 +390,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     WS_OVERLAPPEDWINDOW,
     CW_USEDEFAULT,
     CW_USEDEFAULT,
-    640,
-    480,
+    800,
+    600,
     NULL,
     IDD_MENU,
     hInstance,
@@ -399,30 +418,54 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 21/08/2026
+  Last modified date: 05/09/2026
   Last modified username: Juan Manuel Mar Hdz.
+	Thanks to chatgpt and gemini
 */
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	
+
+  HDC hdc;
+  int width, height;
+
 	switch(msg)
   {
 
     case WM_CREATE:
 
-			IDD_SMAIN = StatusBar_Create(
+			IDD_SMAIN = StatusBarCreate(
 				hwnd, 
-				defaultstatusbar,
-				FALSE);
-			
+				appInst, 
+				0, 
+				STATUSBAR_SIMPLE, 
+				STATUSBAR_LARGE_HEIGHT
+			);
+
       return 0;
 
     case WM_SIZE:
 
-      StatusBar_Resize(hwnd, IDD_SMAIN);
+			width = LOWORD(lParam);
+      height = HIWORD(lParam);
+		
+			StatusBarResize(IDD_SMAIN, width, height);
+			return 0;
+
+		case WM_CTLCOLORDLG:
+
+			if((HWND)lParam == hwnd) 
+			{
+					
+				hdc = (HDC)wParam;
+        SetBkColor(hdc, RGB(255, 255, 255));
+        SetTextColor(hdc, RGB(0, 0, 0));
+        return (INT_PTR)GetStockObject(WHITE_BRUSH);
+					
+			}
+			
 			return 0;
 			
-		case WM_COMMAND:
+	  case WM_COMMAND:
     
 			switch(LOWORD(wParam))
 			{
@@ -456,8 +499,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		
 		case WM_DESTROY:
       
-      PostQuitMessage(0);
-      return 0;
+			if(IDD_MENU)
+      {
+        
+				DestroyMenu(IDD_MENU);
+        IDD_MENU = 0;
+    
+			}
+
+			UnregisterClass(StatusBarClassName, appInst);
+			PostQuitMessage(0);
+			
+			return 0;
     
 	}
 

@@ -9,6 +9,7 @@
 #define CORE_H
 
 HWND IDD_FMAIN;
+HWND IDD_STATUSBAR;
 HINSTANCE appInst;
 
 char language[SMALL_BUFFER];

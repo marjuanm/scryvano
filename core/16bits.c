@@ -12,7 +12,7 @@
 	under the relicensing provision of LGPL-2.1 Section 3.
  
   Copyright notices and attribution for the original work are retained where applicable.
-  Thanks to the osFree project and its contributors for their work and reference implementation.
+  Thanks to the osFree project and contributors for their work and reference implementation.
   https://github.com/osfree-project	
 */
   
