@@ -20,7 +20,7 @@
 
 #define PROJECT_NAME "Scryvano"
 #define PROJECT_SHORT_NAME "Scryvano"
-#define PROJECT_VERSION "0.1.3"
+#define PROJECT_VERSION "0.1.4"
 #define PROJECT_YEAR "2026"
 #define TEAM_NAME "Scryvano & Contributors"
 

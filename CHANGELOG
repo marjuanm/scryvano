@@ -1,3 +1,7 @@
+0.1.4
+
+- Corrections to the "About" module, as the application logo image did not fit the container space in the 32-bit version.
+
 0.1.3
 
 - The icons were redesigned for 16-bit and 32-bit versions; the application icon for the 16-bit version drew inspiration from the color scheme used in Notepad and WinFile, whereas the 32-bit version—having a wider color palette—looks different. Additionally, a container format was chosen to store multiple resolutions within a single .ico file; the possibility of porting this feature to the 16-bit application will be considered.

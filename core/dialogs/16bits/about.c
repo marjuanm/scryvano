@@ -9,7 +9,7 @@ Licensed under GPL-3.0, see the license file on the root project structure for m
   Purpose: Create about dialog
   Created date: 08/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 23/08/2026
+  Last modified date: 21/09/2026
   Last modified username: Juan Manuel Mar Hdz.
   Thanks to chatGPT and gemini
 */
@@ -21,13 +21,13 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
 	HFONT hFont;
   HDC hdcMem;
   int x, y, width;
-  char bufferText[128];
+	HBITMAP hBmp, hOldBmp;
+  char bufferText[MEDIUM_BUFFER];
   char translated[MEDIUM_BUFFER];
-  HBITMAP hBmp, hOldBmp;
-  int parentWidth, parentHeight;
+	int parentWidth, parentHeight;
+  HWND hParent, hStatic, hBtn, hCtrl;
 	int dlgWidth, dlgHeight, fontHeight;
 	int bordersWidth, bordersHeight, status;
-	HWND hParent, hStatic, hBtn, hCtrl;
 	RECT rcParent, rect, rcCtrl, rcDlgOrigin;
 
   switch(msg)
@@ -64,27 +64,32 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
 				
 			}
 			
+			translated[sizeof(translated) - 1] = '\0';
 			SetDlgItemText(hDlg, IDD_BUTTON_ABOUT, translated);
 			
 			// adjust text field to font size
       
 			hFont = getDefaultFont();
-			
-      if(hFont != 0)
-        SendDlgItemMessage(hDlg, IDD_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
-
+      if(hFont != 0) SendDlgItemMessage(hDlg, IDD_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
       fontHeight = getDefaultFontHeight();
+      
       hStatic = GetDlgItem(hDlg, IDD_TEXT_ABOUT);
-      GetWindowRect(hStatic, &rect);
+			
+			if(hStatic != 0)
+			{
+				
+				GetWindowRect(hStatic, &rect);
 
-      pt.x = rect.left;
-      pt.y = rect.top;
-      ScreenToClient(hDlg, &pt);
-      width = rect.right - rect.left;
+				pt.x = rect.left;
+				pt.y = rect.top;
+				ScreenToClient(hDlg, &pt);
+				width = rect.right - rect.left;
             
-			// set vertical align
-			SetWindowPos(hStatic, 0, pt.x, pt.y - 10, width, fontHeight, SWP_NOZORDER | SWP_NOACTIVATE);
+				// set vertical align
+				SetWindowPos(hStatic, 0, pt.x, pt.y - 10, width, fontHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
+			}
+			
       // formating about text to dialog
       sprintf(bufferText, "V. %s - %s %s", PROJECT_VERSION, PROJECT_YEAR, TEAM_NAME);
       SetDlgItemText(hDlg, IDD_TEXT_ABOUT, bufferText);

@@ -4,8 +4,8 @@ yvano\pr32bits\main.c .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr32bits
  *wcc386 main.c -i="C:\trabajos\programas\openwatcom/h;C:\trabajos\programas&
-\openwatcom/h/nt" -w4 -e25 -zq -nt=.text -nd=.data -os -ol -or -d2 -3r -bt=n&
-t -fo=.obj -mf
+\openwatcom/h/nt" -w4 -e25 -zq -nt=.text -nd=.data -os -ol -or -d2 -3r -4r -&
+bt=nt -fo=.obj -mf
 
 C:\trabajos\programas\scryvano\pr32bits\res32.res : C:\trabajos\programas\sc&
 ryvano\resources\res32.rc .AUTODEPEND

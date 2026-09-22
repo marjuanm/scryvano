@@ -4,8 +4,8 @@ yvano\pr16bits\main.c .AUTODEPEND
  @C:
  cd C:\trabajos\programas\scryvano\pr16bits
  *wcc main.c -i="C:\trabajos\programas\openwatcom/h;C:\trabajos\programas\op&
-enwatcom/h/win" -w4 -e25 -zq -os -s -ol -or -d2 -hc -3 -bt=windows -fo=.obj &
--ml
+enwatcom/h/win" -w4 -e25 -zq -os -s -ol -or -d2 -hc -3 -4 -bt=windows -fo=.o&
+bj -ml
 
 C:\trabajos\programas\scryvano\pr16bits\res16.res : C:\trabajos\programas\sc&
 ryvano\resources\res16.rc .AUTODEPEND
