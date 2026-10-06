@@ -9,7 +9,7 @@ Licensed under GPL-3.0, see the license file on the root project structure for m
   Purpose: Create about dialog
   Created date: 08/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 21/09/2026
+  Last modified date: 28/09/2026
   Last modified username: Juan Manuel Mar Hdz.
   Thanks to chatGPT and gemini
 */
@@ -65,15 +65,15 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
 			}
 			
 			translated[sizeof(translated) - 1] = '\0';
-			SetDlgItemText(hDlg, IDD_BUTTON_ABOUT, translated);
+			SetDlgItemText(hDlg, IDC_BUTTON_ABOUT, translated);
 			
 			// adjust text field to font size
       
 			hFont = getDefaultFont();
-      if(hFont != 0) SendDlgItemMessage(hDlg, IDD_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+      if(hFont != 0) SendDlgItemMessage(hDlg, IDC_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
       fontHeight = getDefaultFontHeight();
       
-      hStatic = GetDlgItem(hDlg, IDD_TEXT_ABOUT);
+      hStatic = GetDlgItem(hDlg, IDC_TEXT_ABOUT);
 			
 			if(hStatic != 0)
 			{
@@ -92,11 +92,11 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
 			
       // formating about text to dialog
       sprintf(bufferText, "V. %s - %s %s", PROJECT_VERSION, PROJECT_YEAR, TEAM_NAME);
-      SetDlgItemText(hDlg, IDD_TEXT_ABOUT, bufferText);
+      SetDlgItemText(hDlg, IDC_TEXT_ABOUT, bufferText);
 						
 			// align vertical text in the button
 			
-			hBtn = GetDlgItem(hDlg, IDD_BUTTON_ABOUT);
+			hBtn = GetDlgItem(hDlg, IDC_BUTTON_ABOUT);
 			
 			if(hBtn != 0)
 			{
@@ -109,6 +109,9 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
 				fontHeight = rect.bottom - rect.top;
 				SetWindowPos(hBtn, 0, pt.x, pt.y - 10, width, fontHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 			
+			  // set font to button
+				SendDlgItemMessage(hDlg, IDC_BUTTON_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+		
 			}
 
 			// adjust dialog sizes
@@ -154,7 +157,7 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
     
 			hCtrl = (HWND)LOWORD(lParam);
 
-			if(hCtrl == GetDlgItem(hDlg, IDD_PICTURE_ABOUT))
+			if(hCtrl == GetDlgItem(hDlg, IDC_PICTURE_ABOUT))
 			{
 			
 				hBmp = LoadBitmap(appInst, MAKEINTRESOURCE(IDB_LOGO));
@@ -199,7 +202,7 @@ BOOL FAR PASCAL _export AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM 
 		case WM_COMMAND:
 		{
 		
-			if(wParam == IDOK || wParam == IDCANCEL || wParam == IDD_BUTTON_ABOUT)
+			if(wParam == IDOK || wParam == IDCANCEL || wParam == IDC_BUTTON_ABOUT)
 			{
 			
 				EndDialog(hDlg, TRUE);

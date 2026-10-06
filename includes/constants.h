@@ -13,6 +13,7 @@
   Copyright notices and attribution for the original work are retained where applicable.
   Thanks to the ShellDOS project and contributors for their work and reference implementation.
   https://github.com/marjuanm/shdos
+	
 */
 
 #ifndef CONSTANTS_H
@@ -20,7 +21,7 @@
 
 #define PROJECT_NAME "Scryvano"
 #define PROJECT_SHORT_NAME "Scryvano"
-#define PROJECT_VERSION "0.1.4"
+#define PROJECT_VERSION "0.1.5"
 #define PROJECT_YEAR "2026"
 #define TEAM_NAME "Scryvano & Contributors"
 
@@ -30,8 +31,10 @@
 
 // program objects identifiers
 
-#define IDD_NEW 1001
-#define IDD_EXIT 1002
+#define IDR_MNEW 1001
+#define IDR_MEXIT 1002
+
+#define IDR_MSTATUSBAR 4001
 
 #define IDI_APP_ICON  10000
 

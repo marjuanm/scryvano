@@ -8,8 +8,8 @@
 #ifndef CORE_H
 #define CORE_H
 
-HWND IDD_FMAIN;
-HWND IDD_STATUSBAR;
+HWND H_WINDOW;
+HWND H_STATUSBAR;
 HINSTANCE appInst;
 
 char language[SMALL_BUFFER];
@@ -20,5 +20,6 @@ char defaultstatusbar[SMALL_BUFFER];
 
 HFONT getDefaultFont();
 int getDefaultFontHeight();
+HFONT getDefaultFontWithSize(int);
 
 #endif

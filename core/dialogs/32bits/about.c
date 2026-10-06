@@ -9,7 +9,7 @@
   Purpose: Create about dialog
   Created date: 07/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 21/09/2026
+  Last modified date: 28/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT and gemini
 */
@@ -24,8 +24,8 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 	char translated[MEDIUM_BUFFER];
 	int parentWidth, parentHeight;
 	int pictureWidth, pictureHeight;
-	HWND hParent, hStatic, hPicture;
 	int dlgWidth, dlgHeight, fontHeight;
+	HWND hParent, hStatic, hPicture, hBtn;
 	int bordersWidth, bordersHeight, status;
 	RECT rcParent, rect, rcDlgOrigin, rcPicture;
 
@@ -64,15 +64,15 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 
 			translated[sizeof(translated) - 1] = '\0';
-			SetDlgItemText(hDlg, IDD_BUTTON_ABOUT, translated);
+			SetDlgItemText(hDlg, IDC_BUTTON_ABOUT, translated);
 
 			// adjust text field to font size
 
 			hFont = getDefaultFont();
-			if(hFont != NULL) SendDlgItemMessage(hDlg, IDD_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+			if(hFont != NULL) SendDlgItemMessage(hDlg, IDC_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
 			fontHeight = getDefaultFontHeight();
 
-			hStatic = GetDlgItem(hDlg, IDD_TEXT_ABOUT);
+			hStatic = GetDlgItem(hDlg, IDC_TEXT_ABOUT);
 
 			if(hStatic != NULL)
 			{
@@ -89,10 +89,15 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				SetWindowPos(hStatic, NULL, pt.x, pt.y - 10, width, fontHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 			
 			}
+			
+			// set font to button
+			
+			hBtn = GetDlgItem(hDlg, IDC_BUTTON_ABOUT);
+			if(hBtn != NULL) SendDlgItemMessage(hDlg, IDC_BUTTON_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
 		
 			// set picture to static control
 
-			hPicture = GetDlgItem(hDlg, IDD_PICTURE_ABOUT);
+			hPicture = GetDlgItem(hDlg, IDC_PICTURE_ABOUT);
 
 			if(hPicture != NULL)
 			{
@@ -111,19 +116,19 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 				hBmp = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_LOGO), IMAGE_BITMAP, pictureWidth, pictureHeight, LR_CREATEDIBSECTION);
 			
 				if(hBmp != NULL) 
-					SendDlgItemMessage(hDlg, IDD_PICTURE_ABOUT, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBmp);
+					SendDlgItemMessage(hDlg, IDC_PICTURE_ABOUT, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBmp);
 			
 			}
 
 			// formatting about text to dialog
 
 			snprintf(bufferText, sizeof(bufferText), "V. %s - %s %s", PROJECT_VERSION, PROJECT_YEAR, TEAM_NAME);
-			SetDlgItemText(hDlg, IDD_TEXT_ABOUT, bufferText);
+			SetDlgItemText(hDlg, IDC_TEXT_ABOUT, bufferText);
 
 			// restore font after changing text
 
 			if(hFont != NULL)
-				SendDlgItemMessage(hDlg, IDD_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
+				SendDlgItemMessage(hDlg, IDC_TEXT_ABOUT, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
 		
 			// adjust dialog size
 			//
@@ -166,7 +171,7 @@ INT_PTR CALLBACK AboutDlgProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_COMMAND:
           
-			if(LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL || LOWORD(wParam) == IDD_BUTTON_ABOUT)
+			if(LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL || LOWORD(wParam) == IDC_BUTTON_ABOUT)
       {
 						
 				EndDialog(hDlg, 0);

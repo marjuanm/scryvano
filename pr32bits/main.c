@@ -18,6 +18,7 @@
 
 #include "../includes/constants.h"
 #include "../includes/structures.h"
+#include "../includes/os.h"
 #include "../includes/ini.h"
 #include "../includes/core.h"
 #include "../includes/dialogs/32bits.h"
@@ -29,6 +30,7 @@
 
 #include "../core/ini.c"
 #include "../core/32bits.c"
+#include "../core/os/32bits.c"
 #include "../core/fs-operations/file.c"
 #include "../core/configuration/basic.c"
 #include "../core/configuration/language.c"
@@ -37,13 +39,14 @@
 #include "../core/dialogs/32bits/about.c"
 #include "../core/components/statusbar.c"
 
-HMENU IDD_MENU;
+HMENU H_MENU;
 
-HMENU IDD_MFILE, IDD_MEDIT, IDD_MFIND, IDD_MVIEW;
-HMENU IDD_MCHARACTER, IDD_MPARAGRAPH, IDD_MDOCUMENT;
-HMENU IDD_MEXECUTE, IDD_MPLUGINS, IDD_MWINDOW, IDD_MHELP;
+HMENU IDR_MFILE, IDR_MEDIT, IDR_MFIND, IDR_MVIEW;
+HMENU IDR_MCHARACTER, IDR_MPARAGRAPH, IDR_MDOCUMENT;
+HMENU IDR_MEXECUTE, IDR_MPLUGINS, IDR_MWINDOW, IDR_MHELP;
 
-HWND IDD_SMAIN;
+// view submenus
+HMENU IDR_STATUSBAR;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -51,7 +54,7 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 06/09/2026
+  Last modified date: 01/10/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT and gemini
 */
@@ -61,7 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int len;
 	MSG msg;
 	HWND hwnd;
-	//WNDCLASS wc = {0};
+	char message[128];
 	WNDCLASSEX wc = {0}; // support to multiple icons size
 	char *end, *p, *start;
 	int sw, sh, w, h, x, y, status;
@@ -76,6 +79,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	strcpy(confpath, currentpath);
 	strcat(confpath, "scryvano.cfg");
 	
+	// get os details
+	
+	if(strcasecmp(confpath, "/")	== 0)
+		separator = '/';
+	else
+		separator = '\\';
+	
+	osbits = getOSBits();
+	getOSFlavor(osflavor);
+	
+	/*sprintf(
+    message,
+    "%d",
+    getOSMinorVersion()
+);
+	
+	 MessageBox(
+        NULL,                          // Ventana padre (NULL si no hay ninguna)
+        message,  // Texto del mensaje
+        "Título de la ventana",       // Título del cuadro
+        MB_OK | MB_ICONINFORMATION     // Botón OK e icono de información
+    );
+		*/
 	// load initial file in the parameter list
 	
 	if(lpCmdLine != NULL && lpCmdLine[0] != '\0')
@@ -176,22 +202,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   // create main menu structure
 
-	IDD_MENU = CreateMenu();
+	H_MENU = CreateMenu();
 
 	/* File */
 	
-	if(stricmp(conf.language, "en") == 0)
-		strncpy(menutext, "&File", sizeof(menutext) - 1);
-	else
-	{
-		
-		status = readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
-		if(status == FALSE) strncpy(menutext, "&File", sizeof(menutext) - 1);
-				
-	}
+	IDR_MFILE = CreatePopupMenu();
 
-	IDD_MFILE = CreatePopupMenu();
-	
 	/* submenu new */
 	
 	if(stricmp(conf.language, "en") == 0)
@@ -204,7 +220,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 	
-	AppendMenu(IDD_MFILE, MF_STRING, IDD_NEW, menutext);
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MNEW, menutext);
 	
 	/* submenu new */
 	
@@ -220,9 +236,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 	
-	AppendMenu(IDD_MFILE, MF_SEPARATOR, 0, NULL);
-	
-	AppendMenu(IDD_MFILE, MF_STRING, IDD_EXIT, menutext);
+	AppendMenu(IDR_MFILE, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MEXIT, menutext);
 	
 	/* submenu exit */
 	
@@ -236,9 +251,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MFILE, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MFILE, menutext);
+	
+	/* File */
 
 	/* Edit */
+	
+	IDR_MEDIT = CreatePopupMenu();
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Edit", sizeof(menutext) - 1);
@@ -250,9 +269,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	IDD_MEDIT = CreatePopupMenu();
-	AppendMenu(IDD_MEDIT, MF_STRING, 1002, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MEDIT, menutext);
+	AppendMenu(IDR_MEDIT, MF_STRING, 1002, "Sample");
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MEDIT, menutext);
 
 	/* Find */
 	
@@ -266,11 +284,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	IDD_MFIND = CreatePopupMenu();
-	AppendMenu(IDD_MFIND, MF_STRING, 1003, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MFIND, menutext);
+	IDR_MFIND = CreatePopupMenu();
+	AppendMenu(IDR_MFIND, MF_STRING, 1003, "Sample");
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MFIND, menutext);
 
 	/* View */
+	
+	IDR_MVIEW = CreatePopupMenu();
+
+	/* submenu statusbar */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Status bar", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_view", "statusbar", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Status bar", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MVIEW, MF_STRING, IDR_MSTATUSBAR, menutext);
+	
+	/* submenu statusbar */
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&View", sizeof(menutext) - 1);
@@ -281,23 +317,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		if(status == FALSE) strncpy(menutext, "&View", sizeof(menutext) - 1);
 				
 	}
-
-	IDD_MVIEW = CreatePopupMenu();
-	AppendMenu(IDD_MVIEW, MF_STRING, 1004, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MVIEW, menutext);
+	
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MVIEW, menutext);
+	
+	/* View */
 
 	/* Document */
 
-	IDD_MDOCUMENT = CreatePopupMenu();
+	IDR_MDOCUMENT = CreatePopupMenu();
 
-	IDD_MCHARACTER = CreatePopupMenu();
-	AppendMenu(IDD_MCHARACTER, MF_STRING, 1005, "Sample");
+	IDR_MCHARACTER = CreatePopupMenu();
+	AppendMenu(IDR_MCHARACTER, MF_STRING, 1005, "Sample");
 
-	IDD_MPARAGRAPH = CreatePopupMenu();
-	AppendMenu(IDD_MPARAGRAPH, MF_STRING, 1006, "Sample");
+	IDR_MPARAGRAPH = CreatePopupMenu();
+	AppendMenu(IDR_MPARAGRAPH, MF_STRING, 1006, "Sample");
 
-	AppendMenu(IDD_MDOCUMENT, MF_POPUP, (UINT_PTR)IDD_MCHARACTER, "&Character");
-	AppendMenu(IDD_MDOCUMENT, MF_POPUP, (UINT_PTR)IDD_MPARAGRAPH, "&Paragraph");
+	AppendMenu(IDR_MDOCUMENT, MF_POPUP, (UINT_PTR)IDR_MCHARACTER, "&Character");
+	AppendMenu(IDR_MDOCUMENT, MF_POPUP, (UINT_PTR)IDR_MPARAGRAPH, "&Paragraph");
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Document", sizeof(menutext) - 1);
@@ -309,19 +345,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MDOCUMENT, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MDOCUMENT, menutext);
 
 	/* Execute */
 
-	IDD_MEXECUTE = CreatePopupMenu();
+	IDR_MEXECUTE = CreatePopupMenu();
 
-	AppendMenu(IDD_MEXECUTE, MF_STRING, 1007, "Sample");
-	AppendMenu(IDD_MEXECUTE, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDR_MEXECUTE, MF_STRING, 1007, "Sample");
+	AppendMenu(IDR_MEXECUTE, MF_SEPARATOR, 0, NULL);
 
-	IDD_MPLUGINS = CreatePopupMenu();
-	AppendMenu(IDD_MPLUGINS, MF_STRING, 1008, "Sample");
+	IDR_MPLUGINS = CreatePopupMenu();
+	AppendMenu(IDR_MPLUGINS, MF_STRING, 1008, "Sample");
 
-	AppendMenu(IDD_MEXECUTE, MF_POPUP, (UINT_PTR)IDD_MPLUGINS, "P&lugins");
+	AppendMenu(IDR_MEXECUTE, MF_POPUP, (UINT_PTR)IDR_MPLUGINS, "P&lugins");
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
@@ -333,7 +369,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MEXECUTE, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MEXECUTE, menutext);
 
 	/* Window */
 	
@@ -347,13 +383,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	IDD_MWINDOW = CreatePopupMenu();
-	AppendMenu(IDD_MWINDOW, MF_STRING, 1009, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MWINDOW, menutext);
+	IDR_MWINDOW = CreatePopupMenu();
+	AppendMenu(IDR_MWINDOW, MF_STRING, 1009, "Sample");
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MWINDOW, menutext);
 
 	/* Help */
 
-	IDD_MHELP = CreatePopupMenu();
+	IDR_MHELP = CreatePopupMenu();
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&About of Scryvano", sizeof(menutext) - 1);
@@ -365,8 +401,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 	
-	AppendMenu(IDD_MHELP, MF_SEPARATOR, 0, NULL);
-	AppendMenu(IDD_MHELP, MF_STRING, IDD_ABOUT, menutext);
+	AppendMenu(IDR_MHELP, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDR_MHELP, MF_STRING, IDD_ABOUT, menutext);
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Help", sizeof(menutext) - 1);
@@ -378,7 +414,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				
 	}
 
-	AppendMenu(IDD_MENU, MF_POPUP, (UINT_PTR)IDD_MHELP, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (UINT_PTR)IDR_MHELP, menutext);
 
   // initialize window
 	
@@ -393,11 +429,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     800,
     600,
     NULL,
-    IDD_MENU,
+    H_MENU,
     hInstance,
     NULL);
 		
-	IDD_FMAIN = hwnd;
+	H_WINDOW = hwnd;
 	
   ShowWindow(hwnd, nCmdShow);
   UpdateWindow(hwnd);
@@ -418,7 +454,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 05/09/2026
+  Last modified date: 05/10/2026
   Last modified username: Juan Manuel Mar Hdz.
 	Thanks to chatgpt and gemini
 */
@@ -426,20 +462,106 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 
   HDC hdc;
-  int width, height;
+  int width, height, dpi, scale;
 
 	switch(msg)
   {
 
     case WM_CREATE:
+		
+			if(getOSMajorVersion() >= 5) // Windows 2000+
+			{
+				
+				hdc = GetDC(NULL); 
+				dpi = GetDeviceCaps(hdc, LOGPIXELSX); 
+				ReleaseDC(NULL, hdc); 
+				scale = (dpi * 100) / 96;
+				
+				/*
+				
+				DPI     scale
+				96      100
+				120     125
+				144     150
+				168     175
+				192     200
+				
+				*/
+				
+				if(scale <= 100)
+				{
+			
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_SMALL_HEIGHT
+					);
+			
+				}
+				else if(scale == 125)
+				{
+			
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_MIDDLE_HEIGHT
+					);
+			
+				}
+				else if(scale == 175)
+				{
+			
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_EXTRA_LARGE_HEIGHT1
+					);
+			
+				}
+				else if(scale >= 200)
+				{
+			
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_EXTRA_LARGE_HEIGHT2
+					);
+			
+				}
+				else
+				{
+					
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_LARGE_HEIGHT
+					);	
+					
+				}
 
-			IDD_SMAIN = StatusBarCreate(
-				hwnd, 
-				appInst, 
-				0, 
-				STATUSBAR_SIMPLE, 
-				STATUSBAR_LARGE_HEIGHT
-			);
+			}
+			else
+			{
+			
+				H_STATUSBAR = StatusBarCreate(
+					hwnd, 
+					appInst, 
+					0, 
+					STATUSBAR_SIMPLE, 
+					STATUSBAR_SMALL_HEIGHT
+				);
+			
+			}
 
       return 0;
 
@@ -448,7 +570,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			width = LOWORD(lParam);
       height = HIWORD(lParam);
 		
-			StatusBarResize(IDD_SMAIN, width, height);
+			StatusBarResize(H_STATUSBAR, width, height);
 			return 0;
 
 		case WM_CTLCOLORDLG:
@@ -470,12 +592,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			switch(LOWORD(wParam))
 			{
 				
-				case IDD_EXIT:
+				case IDR_MNEW:
+        {
+					
+					//StatusBarSetText(IDR_STATUSBAR, "Prueba statusbar");
+          return 0;
+        
+				}
+				
+				case IDR_MEXIT:
         {
 					
 					SendMessage(hwnd, WM_CLOSE, 0, 0);
           return 0;
         
+				}
+				
+				case IDR_MSTATUSBAR:
+				{
+					
+					if(IsWindowVisible(H_STATUSBAR))
+						ShowWindow(H_STATUSBAR, SW_HIDE);
+					else
+						ShowWindow(H_STATUSBAR, SW_SHOW);
+			
+					return 0;
+					
 				}
 				
         case IDD_ABOUT:
@@ -499,11 +641,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		
 		case WM_DESTROY:
       
-			if(IDD_MENU)
+			if(H_MENU)
       {
         
-				DestroyMenu(IDD_MENU);
-        IDD_MENU = 0;
+				DestroyMenu(H_MENU);
+        H_MENU = 0;
     
 			}
 

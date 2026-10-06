@@ -23,7 +23,7 @@
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
-static BOOL StatusBarRegisterClass(HINSTANCE hInstance )
+static BOOL StatusBarRegisterClass(HINSTANCE hInstance)
 {
 	
 	WNDCLASS wc;
@@ -50,7 +50,7 @@ static BOOL StatusBarRegisterClass(HINSTANCE hInstance )
   Purpose: Create statusbar
   Created date: 26/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 06/09/2026
+  Last modified date: 28/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -85,7 +85,7 @@ HWND StatusBarCreate(HWND hwndParent, HINSTANCE hInstance, int id, int mode, int
   if(hwndStatus == 0)
     return 0;
 
-  IDD_STATUSBAR = hwndStatus;
+  H_STATUSBAR = hwndStatus;
   StatusBarClearFields(hwndStatus); // initialize fields
 	
   return hwndStatus;
@@ -140,7 +140,7 @@ void StatusBarSetText(HWND hwndStatus, LPCSTR text)
   Purpose: Set text on field index
   Created date: 26/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 06/09/2026
+  Last modified date: 26/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -156,8 +156,9 @@ void StatusBarSetFieldText(HWND hwndStatus, int field, LPCSTR text)
 	if(field == 0)
 	{
 		
-		lstrcpy(statusBarData.simpleText, " ");
-		lstrcat(statusBarData.simpleText, text);
+		//lstrcpy(statusBarData.simpleText, " ");
+		//lstrcat(statusBarData.simpleText, text);
+		lstrcpy(statusBarData.simpleText, text);
 		
 		
 	}
@@ -245,7 +246,7 @@ void StatusBarSetFieldLowered(HWND hwndStatus, int field, BOOL lowered)
   Purpose: Clear fields
   Created date: 26/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 06/09/2026
+  Last modified date: 26/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -261,8 +262,9 @@ void StatusBarClearFields(HWND hwndStatus)
 		{
 			
 			// set default text and font style
-			lstrcpy(statusBarData.fields[0].text, " ");
-			lstrcat(statusBarData.fields[0].text, defaultstatusbar);
+			//lstrcpy(statusBarData.fields[0].text, " ");
+			//lstrcat(statusBarData.fields[0].text, defaultstatusbar);
+			lstrcpy(statusBarData.fields[0].text, defaultstatusbar);
 
 		}
 		else
@@ -271,8 +273,9 @@ void StatusBarClearFields(HWND hwndStatus)
 	}
 	
 	// set default text and font style
-  lstrcpy(statusBarData.simpleText, " ");
-	lstrcat(statusBarData.simpleText, defaultstatusbar);
+  //lstrcpy(statusBarData.simpleText, " ");
+	//lstrcat(statusBarData.simpleText, defaultstatusbar);
+	lstrcpy(statusBarData.simpleText, defaultstatusbar);
 
 	// redraw statusbar
   InvalidateRect(hwndStatus, 0, TRUE);
@@ -350,18 +353,34 @@ int StatusBarGetHeight(HWND hwndStatus)
   Purpose: Manage events on statusbar
   Created date: 26/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 06/09/2026
+  Last modified date: 28/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
-  Thanks to chatGPT
+  Thanks to chatGPT, gemini and WinVi
 */
 LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	
 	HDC hdc;
-	RECT client;
-  HBRUSH hBrush;
+	int i, j;
 	HFONT hOldFont;
 	PAINTSTRUCT ps;
+	POINT HiliteShadow[6], Offsets[6];
+	HBRUSH hBrush, hDark, hLight;
+	RECT client, lineRect, textRect;
+	HPEN hOldPen, hShadowPen, hHighlightPen;
+	int gripHeight, lineSpacing, numLines;
+	
+	gripHeight = statusBarData.height;
+	lineSpacing = 5;
+	numLines = 3;
+	
+	/* grip map */
+  Offsets[0].x = -2; Offsets[0].y = -1;
+	Offsets[1].x = -1; Offsets[1].y = -2;
+	Offsets[2].x = -1; Offsets[2].y = -3;
+	Offsets[3].x = -4; Offsets[3].y =  0;
+	Offsets[4].x = -4; Offsets[4].y = -1;
+	Offsets[5].x =  0; Offsets[5].y = -5;
 
 	switch (message)
   {
@@ -372,25 +391,100 @@ LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			hdc = BeginPaint(hwnd, &ps); 
 			
 			GetClientRect(hwnd, &client); 
-			hBrush = CreateSolidBrush(GetSysColor(COLOR_BTNFACE)); // prepare brush to background 
+			//hBrush = CreateSolidBrush(GetSysColor(COLOR_BTNFACE)); // prepare brush to background 
+			hBrush = CreateSolidBrush(GetSysColor(COLOR_MENU));  // prepare brush to background 
 			FillRect(hdc, &client, hBrush); // paint background 
 			DeleteObject(hBrush); 
-	
-			hOldFont = (HFONT)SelectObject(hdc, statusBarData.hFont); 
+			
+			// 3D efect to statusbar
+			
+			// superior bar (dark and white)
+			hDark = CreateSolidBrush(GetSysColor(COLOR_BTNSHADOW));
+			lineRect = client;
+			lineRect.top = 0;
+			lineRect.bottom = 1;
+			FillRect(hdc, &lineRect, hDark);
+			DeleteObject(hDark);
+
+			hLight = CreateSolidBrush(GetSysColor(COLOR_BTNHIGHLIGHT));
+			lineRect.top = 1;
+			lineRect.bottom = 2;
+			FillRect(hdc, &lineRect, hLight);
+			DeleteObject(hLight);
+			
+			//grip (diagonal bars) on the right corner - thanks to WinVi
+			
+			if(statusBarData.height > STATUSBAR_SMALL_HEIGHT)
+			{
 				
+				// large mode: We draw 4 or 5 lines to cover half the height in a stylized way
+				numLines = 5;
+				lineSpacing = 4;
+				
+			}
+			
+			hShadowPen = CreatePen(PS_SOLID, 1, GetSysColor(COLOR_BTNSHADOW));
+			hHighlightPen = CreatePen(PS_SOLID, 1, GetSysColor(COLOR_BTNHIGHLIGHT));
+			hOldPen = (HPEN)SelectObject(hdc, hShadowPen);
+			
+			// initial mapping of absolute offsets from the bottom-right corner
+			for(i=0; i<6; ++i) 
+			{
+				
+				HiliteShadow[i].x = Offsets[i].x + client.right;
+				HiliteShadow[i].y = Offsets[i].y + client.bottom;
+				
+			}
+			
+			// Iterative drawing of the 3D diagonal bars
+			for(i=0; i<numLines; ++i)
+			{
+				
+				// Dark side (Shadow)
+				SelectObject(hdc, hShadowPen);
+				Polyline(hdc, HiliteShadow, 4);
+
+				// Clear part (3D gloss)
+				SelectObject(hdc, hHighlightPen);
+				Polyline(hdc, HiliteShadow + 4, 2);
+				
+				// Progressive upward/leftward shift
+				for(j=0; j<6; ++j) 
+				{
+					
+					if((j & 3) == 0 || (j & 3) == 3)
+            HiliteShadow[j].x -= lineSpacing;
+					else
+            HiliteShadow[j].y -= lineSpacing;
+    
+				}
+				
+			}
+			
+			// GDI clean objects
+			SelectObject(hdc, hOldPen);
+			DeleteObject(hShadowPen);
+			DeleteObject(hHighlightPen);
+
 			// draw text in statusbar, set transparent background and text using button control text color 
-				
+			
+			hOldFont = (HFONT)SelectObject(hdc, statusBarData.hFont); 
+			
+			// patch, center vertical text
+			textRect = client;
+			textRect.top += 2;  // padding top
+			textRect.left += 5; // padding left
+			textRect.right -= 18; // padding right
+
 			SetBkMode(hdc, TRANSPARENT); 
 			SetTextColor(hdc, GetSysColor(COLOR_BTNTEXT)); 
 			DrawText(
 				hdc, 
 				statusBarData.simpleText, 
 				-1, 
-				&client, 
-				DT_SINGLELINE | 
-				DT_VCENTER | 
-				DT_LEFT 
-			); 
+				&textRect, 
+				DT_SINGLELINE | DT_VCENTER | DT_LEFT 
+			);
 			SelectObject(hdc, hOldFont);
 			EndPaint(hwnd, &ps); 
 			

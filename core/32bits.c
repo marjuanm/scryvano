@@ -9,13 +9,23 @@
   Purpose: Return default font
   Created date: 07/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 07/08/2026
+  Last modified date: 26/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
 HFONT getDefaultFont()
 {
-	return (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+	
+	NONCLIENTMETRICS ncm;
+  memset(&ncm, 0, sizeof(NONCLIENTMETRICS));
+  ncm.cbSize = sizeof(NONCLIENTMETRICS);
+
+  // get system client area meters
+  if(SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0))
+		return CreateFontIndirect(&ncm.lfMenuFont);
+  else
+		return (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+
 }
 
 /* 

@@ -17,6 +17,7 @@
 
 #include "../includes/constants.h"
 #include "../includes/structures.h"
+#include "../includes/os.h"
 #include "../includes/ini.h"
 #include "../includes/core.h"
 #include "../includes/dialogs/16bits.h"
@@ -28,6 +29,7 @@
 
 #include "../core/ini.c"
 #include "../core/16bits.c"
+#include "../core/os/16bits.c"
 #include "../core/fs-operations/file.c"
 #include "../core/configuration/basic.c"
 #include "../core/configuration/language.c"
@@ -36,13 +38,11 @@
 #include "../core/dialogs/16bits/about.c"
 #include "../core/components/statusbar.c"
 
-HMENU IDD_MENU;
+HMENU H_MENU;
 
-HMENU IDD_MFILE, IDD_MEDIT, IDD_MFIND, IDD_MVIEW;
-HMENU IDD_MCHARACTER, IDD_MPARAGRAPH, IDD_MDOCUMENT;
-HMENU IDD_MEXECUTE, IDD_MPLUGINS, IDD_MWINDOW, IDD_MHELP;
-
-HWND IDD_SMAIN;
+HMENU IDR_MFILE, IDR_MEDIT, IDR_MFIND, IDR_MVIEW;
+HMENU IDR_MCHARACTER, IDR_MPARAGRAPH, IDR_MDOCUMENT;
+HMENU IDR_MEXECUTE, IDR_MPLUGINS, IDR_MWINDOW, IDR_MHELP;
 
 LRESULT FAR PASCAL WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -50,7 +50,7 @@ LRESULT FAR PASCAL WndProc(HWND, UINT, WPARAM, LPARAM);
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 06/09/2026
+  Last modified date: 01/10/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT
 */
@@ -74,6 +74,16 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 	strcpy(confpath, currentpath);
 	strcat(confpath, "scryvano.cfg");
 	
+	// get os details
+	
+	if(strcasecmp(confpath, "/")	== 0)
+		separator = '/';
+	else
+		separator = '\\';
+	
+	osbits = getOSBits();
+	getOSFlavor(osflavor);
+
 	// load initial file in the parameter list
 	
 	if(lpCmdLine != NULL && lpCmdLine[0] != '\0')
@@ -120,7 +130,7 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 		}
         
 	}
-	
+
 	// load configuration
 	
 	conf = getDefaultConfiguration();
@@ -161,21 +171,11 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 	
 	// create main menu structure
 
-	IDD_MENU = CreateMenu();
+	H_MENU = CreateMenu();
 
 	/* File */
 	
-	if(stricmp(conf.language, "en") == 0)
-		strncpy(menutext, "&File", sizeof(menutext) - 1);
-	else
-	{
-		
-		status = readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
-		if(status == FALSE) strncpy(menutext, "&File", sizeof(menutext) - 1);
-				
-	}
-
-	IDD_MFILE = CreatePopupMenu();
+	IDR_MFILE = CreatePopupMenu();
 	
 	/* submenu new */
 	
@@ -189,7 +189,7 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 	
-	AppendMenu(IDD_MFILE, MF_STRING, IDD_NEW, menutext);
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MNEW, menutext);
 	
 	/* submenu new */
 	
@@ -205,8 +205,8 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 	
-	AppendMenu(IDD_MFILE, MF_SEPARATOR, 0, NULL);
-	AppendMenu(IDD_MFILE, MF_STRING, IDD_EXIT, menutext);
+	AppendMenu(IDR_MFILE, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MEXIT, menutext);
 	
 	/* submenu exit */
 	
@@ -220,7 +220,9 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 	
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MFILE, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MFILE, menutext);
+	
+	/* File */
 
 	/* Edit */
 	
@@ -234,9 +236,9 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 
-	IDD_MEDIT = CreatePopupMenu();
-	AppendMenu(IDD_MEDIT, MF_STRING, 1002, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MEDIT, menutext);
+	IDR_MEDIT = CreatePopupMenu();
+	AppendMenu(IDR_MEDIT, MF_STRING, 1002, "Sample");
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MEDIT, menutext);
 
 	/* Find */
 	
@@ -250,11 +252,29 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 
-	IDD_MFIND = CreatePopupMenu();
-	AppendMenu(IDD_MFIND, MF_STRING, 1003, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MFIND, menutext);
+	IDR_MFIND = CreatePopupMenu();
+	AppendMenu(IDR_MFIND, MF_STRING, 1003, "Sample");
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MFIND, menutext);
 
 	/* View */
+	
+	IDR_MVIEW = CreatePopupMenu();
+	
+	/* submenu statusbar */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Status bar", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_view", "statusbar", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Status bar", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MVIEW, MF_STRING, IDR_MSTATUSBAR, menutext);
+	
+	/* submenu statusbar */
 
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&View", sizeof(menutext) - 1);
@@ -265,24 +285,23 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 		if(status == FALSE) strncpy(menutext, "&View", sizeof(menutext) - 1);
 				
 	}
-	
 
-	IDD_MVIEW = CreatePopupMenu();
-	AppendMenu(IDD_MVIEW, MF_STRING, 1004, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MVIEW, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MVIEW, menutext);
+	
+	/* View */
 
 	/* Document */
 
-	IDD_MDOCUMENT = CreatePopupMenu();
+	IDR_MDOCUMENT = CreatePopupMenu();
 
-	IDD_MCHARACTER = CreatePopupMenu();
-	AppendMenu(IDD_MCHARACTER, MF_STRING, 1005, "Sample");
+	IDR_MCHARACTER = CreatePopupMenu();
+	AppendMenu(IDR_MCHARACTER, MF_STRING, 1005, "Sample");
 
-	IDD_MPARAGRAPH = CreatePopupMenu();
-	AppendMenu(IDD_MPARAGRAPH, MF_STRING, 1006, "Sample");
+	IDR_MPARAGRAPH = CreatePopupMenu();
+	AppendMenu(IDR_MPARAGRAPH, MF_STRING, 1006, "Sample");
 	
-	AppendMenu(IDD_MDOCUMENT, MF_POPUP, (HMENU)IDD_MCHARACTER, "&Character");
-	AppendMenu(IDD_MDOCUMENT, MF_POPUP, (HMENU)IDD_MPARAGRAPH, "&Paragraph");
+	AppendMenu(IDR_MDOCUMENT, MF_POPUP, (HMENU)IDR_MCHARACTER, "&Character");
+	AppendMenu(IDR_MDOCUMENT, MF_POPUP, (HMENU)IDR_MPARAGRAPH, "&Paragraph");
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Document", sizeof(menutext) - 1);
@@ -294,19 +313,19 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MDOCUMENT, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MDOCUMENT, menutext);
 
 	/* Execute */
 
-	IDD_MEXECUTE = CreatePopupMenu();
+	IDR_MEXECUTE = CreatePopupMenu();
 
-	AppendMenu(IDD_MEXECUTE, MF_STRING, 1007, "Sample");
-	AppendMenu(IDD_MEXECUTE, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDR_MEXECUTE, MF_STRING, 1007, "Sample");
+	AppendMenu(IDR_MEXECUTE, MF_SEPARATOR, 0, NULL);
 
-	IDD_MPLUGINS = CreatePopupMenu();
-	AppendMenu(IDD_MPLUGINS, MF_STRING, 1008, "Sample");
+	IDR_MPLUGINS = CreatePopupMenu();
+	AppendMenu(IDR_MPLUGINS, MF_STRING, 1008, "Sample");
 
-	AppendMenu(IDD_MEXECUTE, MF_POPUP, (HMENU)IDD_MPLUGINS, "P&lugins");
+	AppendMenu(IDR_MEXECUTE, MF_POPUP, (HMENU)IDR_MPLUGINS, "P&lugins");
 	
   if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
@@ -318,7 +337,7 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MEXECUTE, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MEXECUTE, menutext);
 
 	/* Window */
 	
@@ -332,13 +351,13 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 
-	IDD_MWINDOW = CreatePopupMenu();
-	AppendMenu(IDD_MWINDOW, MF_STRING, 1009, "Sample");
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MWINDOW, menutext);
+	IDR_MWINDOW = CreatePopupMenu();
+	AppendMenu(IDR_MWINDOW, MF_STRING, 1009, "Sample");
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MWINDOW, menutext);
 
 	/* Help */
 
-	IDD_MHELP = CreatePopupMenu();
+	IDR_MHELP = CreatePopupMenu();
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&About of Scryvano", sizeof(menutext) - 1);
@@ -350,8 +369,8 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 	
-	AppendMenu(IDD_MHELP, MF_SEPARATOR, 0, NULL);
-	AppendMenu(IDD_MHELP, MF_STRING, IDD_ABOUT, menutext);
+	AppendMenu(IDR_MHELP, MF_SEPARATOR, 0, NULL);
+	AppendMenu(IDR_MHELP, MF_STRING, IDD_ABOUT, menutext);
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "&Help", sizeof(menutext) - 1);
@@ -363,7 +382,7 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 				
 	}
 	  
-	AppendMenu(IDD_MENU, MF_POPUP, (HMENU)IDD_MHELP, menutext);
+	AppendMenu(H_MENU, MF_POPUP, (HMENU)IDR_MHELP, menutext);
 	
 	// initialize window
 	
@@ -385,11 +404,11 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
 		w,
 		h,
 		0,
-		IDD_MENU,
+		H_MENU,
 		hInstance,
 		0);
 
-  IDD_FMAIN = hwnd;
+  H_WINDOW = hwnd;
 
   ShowWindow(hwnd, nCmdShow);
   UpdateWindow(hwnd);
@@ -410,7 +429,7 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 05/09/2026
+  Last modified date: 05/10/2026
   Last modified username: Juan Manuel Mar Hdz.
 	Thanks to chatgpt and gemini
 */
@@ -425,8 +444,8 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
   {
 
 		case WM_CREATE:
-
-			IDD_SMAIN = StatusBarCreate(
+		
+			H_STATUSBAR = StatusBarCreate(
 				hwnd, 
 				appInst, 
 				0, 
@@ -441,12 +460,12 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			width = LOWORD(lParam);
       height = HIWORD(lParam);
 		
-			StatusBarResize(IDD_SMAIN, width, height);
+			StatusBarResize(H_STATUSBAR, width, height);
 			return 0;
 					
 		case WM_CTLCOLOR:
 			
-			if((HWND)lParam == IDD_SMAIN)
+			if((HWND)lParam == H_STATUSBAR)
 			{
         
 				hdc = (HDC)wParam;
@@ -463,21 +482,33 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			switch(LOWORD(wParam))
 			{
 				
-				case IDD_NEW:
+				case IDR_MNEW:
         {
 					
-					//StatusBarSetText(IDD_STATUSBAR, "Prueba statusbar");
+					//StatusBarSetText(IDR_STATUSBAR, "Prueba statusbar");
           return 0;
         
 				}
 				
-        case IDD_EXIT:
+        case IDR_MEXIT:
         {
 					
-					//StatusBarClearFields(IDD_STATUSBAR);
+					//StatusBarClearFields(IDR_STATUSBAR);
 					SendMessage(hwnd, WM_CLOSE, 0, 0);
           return 0;
         
+				}
+				
+				case IDR_MSTATUSBAR:
+				{
+					
+					if(IsWindowVisible(H_STATUSBAR))
+						ShowWindow(H_STATUSBAR, SW_HIDE);
+					else
+						ShowWindow(H_STATUSBAR, SW_SHOW);
+			
+					return 0;
+					
 				}
 				
         case IDD_ABOUT:
@@ -510,11 +541,11 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			
 		case WM_DESTROY:
       
-			if(IDD_MENU)
+			if(H_MENU)
       {
         
-				DestroyMenu(IDD_MENU);
-        IDD_MENU = 0;
+				DestroyMenu(H_MENU);
+        H_MENU = 0;
     
 			}
 

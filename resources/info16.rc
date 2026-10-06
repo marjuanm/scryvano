@@ -15,12 +15,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName",      "MS Proys\0"
             VALUE "FileDescription",  "Scryvano is a lightweight writing editor compatible 16-32 bits.\0"
-            VALUE "FileVersion",      "0.1.4.0\0"
+            VALUE "FileVersion",      "0.1.5.0\0"
             VALUE "InternalName",     "scryvano\0"
             VALUE "LegalCopyright",   "Copyright (C) 2026\0"
             VALUE "OriginalFilename", "scryvano.exe\0"
             VALUE "ProductName",      "Scryvano\0"
-            VALUE "ProductVersion",   "0.1.4.0\0"
+            VALUE "ProductVersion",   "0.1.5.0\0"
         END
     END
     BLOCK "VarFileInfo"

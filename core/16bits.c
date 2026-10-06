@@ -20,18 +20,31 @@
   Purpose: Return default font
   Created date: 07/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 19/08/2026
+  Last modified date: 26/09/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT and gemini
 */
 HFONT getDefaultFont()
+{
+  return getDefaultFontWithSize(12);
+}
+
+/* 
+  Purpose: Return default font
+  Created date: 26/09/2026
+  Created by username: Juan Manuel Mar Hdz.
+  Last modified date: 26/09/2026
+  Last modified username: Juan Manuel Mar Hdz. 
+  Thanks to chatGPT and gemini
+*/
+HFONT getDefaultFontWithSize(int fontsize)
 {
 
   LOGFONT lf;
   memset(&lf, 0, sizeof(lf));
 
   // font -12 o -13. 
-  lf.lfHeight = -12; 
+  lf.lfHeight = fontsize * -1; 
   lf.lfWidth = 0;
   lf.lfEscapement = 0;
   lf.lfOrientation = 0;
