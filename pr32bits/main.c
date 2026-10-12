@@ -23,6 +23,7 @@
 #include "../includes/core.h"
 #include "../includes/dialogs/32bits.h"
 #include "../includes/fs-operations/file.h"
+#include "../includes/fs-operations/folder.h"
 #include "../includes/configuration/basic.h"
 #include "../includes/configuration/language.h"
 
@@ -30,8 +31,10 @@
 
 #include "../core/ini.c"
 #include "../core/32bits.c"
+#include "../core/commons.c"
 #include "../core/os/32bits.c"
 #include "../core/fs-operations/file.c"
+#include "../core/fs-operations/folder.c"
 #include "../core/configuration/basic.c"
 #include "../core/configuration/language.c"
 #include "../core/configuration/32bits.c"
@@ -454,7 +457,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 05/10/2026
+  Last modified date: 09/10/2026
   Last modified username: Juan Manuel Mar Hdz.
 	Thanks to chatgpt and gemini
 */
@@ -462,12 +465,42 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 
   HDC hdc;
-  int width, height, dpi, scale;
+	RECT statusRect;
+  int width, height;
+	char path[SMALL_BUFFER];
+	int dpi, scale, statusHeight;
 
 	switch(msg)
   {
 
     case WM_CREATE:
+		
+		  // create text editor
+			
+			H_SINGLE_EDITOR = CreateWindow(
+        "EDIT",
+        "",
+        WS_CHILD |
+        WS_VISIBLE |
+        WS_BORDER |
+        ES_MULTILINE |
+        ES_AUTOVSCROLL |
+        ES_AUTOHSCROLL |
+        WS_VSCROLL |
+        WS_HSCROLL,
+        0,
+        0,
+        0,
+        0,
+        hwnd,
+        (HMENU)1001,
+        appInst,
+        NULL
+			);
+			
+			SendMessage(H_SINGLE_EDITOR, WM_SETFONT, (WPARAM)getDefaultFont(), TRUE);
+
+		  // create statusbar
 		
 			if(getOSMajorVersion() >= 5) // Windows 2000+
 			{
@@ -490,15 +523,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				
 				if(scale <= 100)
 				{
-			
-					H_STATUSBAR = StatusBarCreate(
-						hwnd, 
-						appInst, 
-						0, 
-						STATUSBAR_SIMPLE, 
-						STATUSBAR_SMALL_HEIGHT
-					);
-			
+					
+					if(getOSMajorVersion() >= 10) // Windows 10+
+					{
+						
+						H_STATUSBAR = StatusBarCreate(
+						  hwnd, 
+						  appInst, 
+						  0, 
+						  STATUSBAR_SIMPLE, 
+						  STATUSBAR_SMALL_HEIGHT2
+					  );
+						
+					}
+					else
+					{
+		
+						H_STATUSBAR = StatusBarCreate(
+							hwnd, 
+							appInst, 
+							0, 
+							STATUSBAR_SIMPLE, 
+						  STATUSBAR_SMALL_HEIGHT2 - 3
+					  );
+
+					}
+
 				}
 				else if(scale == 125)
 				{
@@ -552,15 +602,34 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			else
 			{
-			
-				H_STATUSBAR = StatusBarCreate(
-					hwnd, 
-					appInst, 
-					0, 
-					STATUSBAR_SIMPLE, 
-					STATUSBAR_SMALL_HEIGHT
-				);
-			
+				
+				strncpy(path, "c:\\windows\\system32", sizeof(path) - 1); 
+				
+				if(folder_exists(path) == TRUE)
+				{
+					
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_SMALL_HEIGHT1 + 2
+					);
+					
+				}
+				else
+				{
+					
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_SMALL_HEIGHT1
+					);
+					
+				}
+	
 			}
 
       return 0;
@@ -570,7 +639,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			width = LOWORD(lParam);
       height = HIWORD(lParam);
 		
+		  // attach statusbar
 			StatusBarResize(H_STATUSBAR, width, height);
+			
+			// attach editor
+			
+			GetClientRect(H_STATUSBAR, &statusRect);
+			statusHeight = statusRect.bottom;
+			MoveWindow(H_SINGLE_EDITOR, 0, 0, width, height - statusHeight, TRUE);
+			
+			resizeEditor(hwnd); // resize editor area
 			return 0;
 
 		case WM_CTLCOLORDLG:
@@ -615,7 +693,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 						ShowWindow(H_STATUSBAR, SW_HIDE);
 					else
 						ShowWindow(H_STATUSBAR, SW_SHOW);
-			
+					
+					resizeEditor(hwnd); // resize editor area
 					return 0;
 					
 				}

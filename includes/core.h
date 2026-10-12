@@ -12,6 +12,8 @@ HWND H_WINDOW;
 HWND H_STATUSBAR;
 HINSTANCE appInst;
 
+HWND H_SINGLE_EDITOR;
+
 char language[SMALL_BUFFER];
 char confpath[LARGE_BUFFER];
 char currentpath[LARGE_BUFFER];
@@ -19,6 +21,7 @@ char translatefile[SMALL_BUFFER];
 char defaultstatusbar[SMALL_BUFFER];
 
 HFONT getDefaultFont();
+void resizeEditor(HWND);
 int getDefaultFontHeight();
 HFONT getDefaultFontWithSize(int);
 

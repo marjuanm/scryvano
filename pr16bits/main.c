@@ -22,6 +22,7 @@
 #include "../includes/core.h"
 #include "../includes/dialogs/16bits.h"
 #include "../includes/fs-operations/file.h"
+#include "../includes/fs-operations/folder.h"
 #include "../includes/configuration/basic.h"
 #include "../includes/configuration/language.h"
 
@@ -29,8 +30,10 @@
 
 #include "../core/ini.c"
 #include "../core/16bits.c"
+#include "../core/commons.c"
 #include "../core/os/16bits.c"
 #include "../core/fs-operations/file.c"
+#include "../core/fs-operations/folder.c"
 #include "../core/configuration/basic.c"
 #include "../core/configuration/language.c"
 #include "../core/configuration/16bits.c"
@@ -429,7 +432,7 @@ int PASCAL WinMain(HANDLE hInstance, HANDLE hPrevInstance, LPSTR lpCmdLine, int 
   Purpose: Window events processor
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 05/10/2026
+  Last modified date: 08/10/2026
   Last modified username: Juan Manuel Mar Hdz.
 	Thanks to chatgpt and gemini
 */
@@ -437,21 +440,88 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	
 	HDC hdc;
-	int width, height;
+	RECT statusRect;
 	FARPROC lpfnAbout;
-	
+	char path[SMALL_BUFFER];
+	int width, height, statusHeight;
+
 	switch(msg)
   {
 
 		case WM_CREATE:
 		
-			H_STATUSBAR = StatusBarCreate(
-				hwnd, 
-				appInst, 
-				0, 
-				STATUSBAR_SIMPLE, 
-				STATUSBAR_SMALL_HEIGHT
+			// create text editor
+			
+			H_SINGLE_EDITOR = CreateWindow(
+        "EDIT",
+        "",
+        WS_CHILD |
+        WS_VISIBLE |
+        WS_BORDER |
+        ES_MULTILINE |
+        ES_AUTOVSCROLL |
+        ES_AUTOHSCROLL |
+        WS_VSCROLL |
+        WS_HSCROLL,
+        0,
+        0,
+        0,
+        0,
+        hwnd,
+        (HMENU)1001,
+        appInst,
+        0
 			);
+			
+			SendMessage(H_SINGLE_EDITOR, WM_SETFONT, (WPARAM)getDefaultFont(), TRUE);
+			
+			// create statusbar
+			
+			strncpy(path, "c:\\windows\\command", sizeof(path) - 1); 
+			
+			if(folder_exists(path) == TRUE)
+			{
+				
+				strncpy(path, "c:\\windows\\system32", sizeof(path) - 1); 
+				
+				if(folder_exists(path) == TRUE)
+				{
+					
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_SMALL_HEIGHT2 - 4
+					);
+					
+				}
+				else
+				{
+					
+					H_STATUSBAR = StatusBarCreate(
+						hwnd, 
+						appInst, 
+						0, 
+						STATUSBAR_SIMPLE, 
+						STATUSBAR_SMALL_HEIGHT1
+					);
+					
+				}
+				
+			}
+			else
+			{
+				
+				H_STATUSBAR = StatusBarCreate(
+					hwnd, 
+					appInst, 
+					0, 
+					STATUSBAR_SIMPLE, 
+					STATUSBAR_SMALL_HEIGHT1 + 2
+				);
+				
+			}
 
       return 0;
 
@@ -460,7 +530,16 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			width = LOWORD(lParam);
       height = HIWORD(lParam);
 		
+			// attach statusbar
 			StatusBarResize(H_STATUSBAR, width, height);
+			
+			// attach editor
+			
+			GetClientRect(H_STATUSBAR, &statusRect);
+			statusHeight = statusRect.bottom;
+			MoveWindow(H_SINGLE_EDITOR, 0, 0, width, height - statusHeight, TRUE);
+			
+			resizeEditor(hwnd); // resize editor area
 			return 0;
 					
 		case WM_CTLCOLOR:
@@ -507,6 +586,7 @@ LRESULT FAR PASCAL WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 					else
 						ShowWindow(H_STATUSBAR, SW_SHOW);
 			
+					resizeEditor(hwnd); // resize editor area
 					return 0;
 					
 				}

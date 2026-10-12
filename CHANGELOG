@@ -1,3 +1,9 @@
+0.1.6
+
+- Status bar fixes: sizes adjusted to correctly match Windows 11, Windows 7, ReactOS, Windows 9x, and 3.11.
+
+- Fixes to correctly handle ReactOS and Windows 7 themes.
+
 0.1.5
 
 - Rewrote the status bar to implement a "grip" (diagonal bars on the right side, similar to the style used in Windows 95 and later applications).

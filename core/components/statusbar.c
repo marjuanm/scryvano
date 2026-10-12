@@ -353,7 +353,7 @@ int StatusBarGetHeight(HWND hwndStatus)
   Purpose: Manage events on statusbar
   Created date: 26/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 28/09/2026
+  Last modified date: 07/10/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT, gemini and WinVi
 */
@@ -391,8 +391,12 @@ LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			hdc = BeginPaint(hwnd, &ps); 
 			
 			GetClientRect(hwnd, &client); 
-			//hBrush = CreateSolidBrush(GetSysColor(COLOR_BTNFACE)); // prepare brush to background 
-			hBrush = CreateSolidBrush(GetSysColor(COLOR_MENU));  // prepare brush to background 
+			
+			if(getOSBits() == 32)
+				hBrush = CreateSolidBrush(GetSysColor(COLOR_BTNFACE)); // prepare brush to background 
+			else
+				hBrush = CreateSolidBrush(GetSysColor(COLOR_MENU));  // prepare brush to background 
+			
 			FillRect(hdc, &client, hBrush); // paint background 
 			DeleteObject(hBrush); 
 			
@@ -414,12 +418,25 @@ LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			
 			//grip (diagonal bars) on the right corner - thanks to WinVi
 			
-			if(statusBarData.height > STATUSBAR_SMALL_HEIGHT)
+			if(statusBarData.height > STATUSBAR_SMALL_HEIGHT1 || statusBarData.height > STATUSBAR_SMALL_HEIGHT2)
 			{
 				
 				// large mode: We draw 4 or 5 lines to cover half the height in a stylized way
-				numLines = 5;
-				lineSpacing = 4;
+				
+				if(statusBarData.height > STATUSBAR_SMALL_HEIGHT2)
+				{	
+			
+					numLines = 5;
+				  lineSpacing = 4;
+					
+				}
+				else
+				{	
+			
+					numLines = 4;
+				  lineSpacing = 3;
+					
+				}	
 				
 			}
 			
@@ -491,6 +508,13 @@ LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			return 0; 
 			
 		}
+		
+		case WM_SYSCOLORCHANGE:
+
+      InvalidateRect(hwnd, NULL, TRUE);
+      UpdateWindow(hwnd);
+
+    break;
 
 		case WM_ERASEBKGND:
       return 1;
