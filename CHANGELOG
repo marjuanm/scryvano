@@ -1,3 +1,11 @@
+0.1.7
+
+- Adjustments to the status bar to ensure text is correctly centered in vertical mode on Windows 95/98.
+
+- Implementation of submenus under the "File" menu; although no functional code is included, the purpose is to test the status bar text.
+
+- Fix for loading translations in submenus: previously, if a translation file existed but a specific translation string could not be found, the default text would fail to load.
+
 0.1.6
 
 - Status bar fixes: sizes adjusted to correctly match Windows 11, Windows 7, ReactOS, Windows 9x, and 3.11.

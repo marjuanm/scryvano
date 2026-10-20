@@ -21,7 +21,7 @@
 
 #define PROJECT_NAME "Scryvano"
 #define PROJECT_SHORT_NAME "Scryvano"
-#define PROJECT_VERSION "0.1.6"
+#define PROJECT_VERSION "0.1.7"
 #define PROJECT_YEAR "2026"
 #define TEAM_NAME "Scryvano & Contributors"
 
@@ -32,7 +32,17 @@
 // program objects identifiers
 
 #define IDR_MNEW 1001
-#define IDR_MEXIT 1002
+#define IDR_MOPEN 1002
+#define IDR_MSAVE 1003
+#define IDR_MSAVEAS 1004
+#define IDR_MSAVEALL 1005
+#define IDR_MCLOSE 1006
+#define IDR_MCLOSEALL 1007
+#define IDR_MLOADSESSION 1008
+#define IDR_MSAVESESSION 1009
+#define IDR_MPRINT 1010
+#define IDR_MPRINTCONFIGURE 1011
+#define IDR_MEXIT 1012
 
 #define IDR_MSTATUSBAR 4001
 

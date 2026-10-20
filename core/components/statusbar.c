@@ -353,7 +353,7 @@ int StatusBarGetHeight(HWND hwndStatus)
   Purpose: Manage events on statusbar
   Created date: 26/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 07/10/2026
+  Last modified date: 18/10/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT, gemini and WinVi
 */
@@ -364,9 +364,10 @@ LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 	int i, j;
 	HFONT hOldFont;
 	PAINTSTRUCT ps;
-	POINT HiliteShadow[6], Offsets[6];
+	char path[SMALL_BUFFER];
 	HBRUSH hBrush, hDark, hLight;
 	RECT client, lineRect, textRect;
+	POINT HiliteShadow[6], Offsets[6];
 	HPEN hOldPen, hShadowPen, hHighlightPen;
 	int gripHeight, lineSpacing, numLines;
 	
@@ -489,7 +490,23 @@ LRESULT CALLBACK StatusBarWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			
 			// patch, center vertical text
 			textRect = client;
-			textRect.top += 2;  // padding top
+			
+			strncpy(path, "c:\\windows\\command", sizeof(path) - 1); 
+			
+			if(folder_exists(path) == TRUE)
+			{
+				
+				strncpy(path, "c:\\windows\\system32", sizeof(path) - 1); 
+				
+				if(folder_exists(path) == FALSE) // Windows 95 / 98
+				  textRect.top += 4;  // padding top
+				else
+					textRect.top += 2;  // padding top
+				
+			}
+			else
+				textRect.top += 2;  // padding top
+			
 			textRect.left += 5; // padding left
 			textRect.right -= 18; // padding right
 

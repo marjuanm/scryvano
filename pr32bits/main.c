@@ -48,16 +48,13 @@ HMENU IDR_MFILE, IDR_MEDIT, IDR_MFIND, IDR_MVIEW;
 HMENU IDR_MCHARACTER, IDR_MPARAGRAPH, IDR_MDOCUMENT;
 HMENU IDR_MEXECUTE, IDR_MPLUGINS, IDR_MWINDOW, IDR_MHELP;
 
-// view submenus
-HMENU IDR_STATUSBAR;
-
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 /* 
   Purpose: Create the main window
   Created date: 05/08/2026
   Created by username: Juan Manuel Mar Hdz.
-  Last modified date: 01/10/2026
+  Last modified date: 08/10/2026
   Last modified username: Juan Manuel Mar Hdz. 
   Thanks to chatGPT and gemini
 */
@@ -220,12 +217,189 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_file", "new", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&New", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&New", sizeof(menutext) - 1);
 				
 	}
 	
 	AppendMenu(IDR_MFILE, MF_STRING, IDR_MNEW, menutext);
 	
 	/* submenu new */
+	
+	/* submenu open */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Open", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "open", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Open", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Open", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MOPEN, menutext);
+	
+	/* submenu open */
+	
+	/* submenu save */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Save", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "save", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Save", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Save", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MSAVE, menutext);
+	
+	/* submenu save */
+	
+	/* submenu save as */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "Save &as", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "saveas", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "Save &as", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "Save &as", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MSAVEAS, menutext);
+	
+	/* submenu save as */
+	
+	/* submenu save all */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "Save a&ll", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "saveall", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "Save a&ll", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "Save a&ll", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MSAVEALL, menutext);
+	
+	/* submenu save all */
+	
+	/* submenu close */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Close", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "close", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Close", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Close", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MCLOSE, menutext);
+	
+	/* submenu close */
+	
+	/* submenu close all */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "Cl&ose all", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "closeall", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "Cl&ose all", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "Cl&ose all", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MCLOSEALL, menutext);
+	
+	/* submenu close all */
+	
+	AppendMenu(IDR_MFILE, MF_SEPARATOR, 0, NULL);
+	
+	/* submenu load session */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Load session", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "loadsession", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Load session", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Load session", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MLOADSESSION, menutext);
+	
+	/* submenu load session */
+	
+	/* submenu save session */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "Sa&ve session", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "savesession", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "Sa&ve session", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "Sa&ve session", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MSAVESESSION, menutext);
+	
+	/* submenu save session */
+	
+	AppendMenu(IDR_MFILE, MF_SEPARATOR, 0, NULL);
+	
+	/* submenu print */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Print", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "print", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Print", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Print", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MPRINT, menutext);
+	
+	/* submenu print */
+	
+	/* submenu print configure */
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "Print con&figure", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_file", "printconfigure", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "Print con&figure", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "Print con&figure", sizeof(menutext) - 1);
+				
+	}
+	
+	AppendMenu(IDR_MFILE, MF_STRING, IDR_MPRINTCONFIGURE, menutext);
+	
+	/* submenu print configure */
+	
+	AppendMenu(IDR_MFILE, MF_SEPARATOR, 0, NULL);
 	
 	/* submenu exit */
 	
@@ -236,10 +410,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_file", "exit", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "Ex&it", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "E&xit", sizeof(menutext) - 1);
 				
 	}
 	
-	AppendMenu(IDR_MFILE, MF_SEPARATOR, 0, NULL);
 	AppendMenu(IDR_MFILE, MF_STRING, IDR_MEXIT, menutext);
 	
 	/* submenu exit */
@@ -251,6 +425,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "file", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&File", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&File", sizeof(menutext) - 1);
 				
 	}
 
@@ -269,6 +444,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "edit", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&Edit", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Edit", sizeof(menutext) - 1);
 				
 	}
 
@@ -284,6 +460,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "find", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&Find", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Find", sizeof(menutext) - 1);
 				
 	}
 
@@ -304,6 +481,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_view", "statusbar", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&Status bar", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Status bar", sizeof(menutext) - 1);
 				
 	}
 	
@@ -318,6 +496,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "view", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&View", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&View", sizeof(menutext) - 1);
 				
 	}
 	
@@ -345,6 +524,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "document", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&Document", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Document", sizeof(menutext) - 1);
 				
 	}
 
@@ -359,8 +539,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	IDR_MPLUGINS = CreatePopupMenu();
 	AppendMenu(IDR_MPLUGINS, MF_STRING, 1008, "Sample");
+	
+	if(stricmp(conf.language, "en") == 0)
+		strncpy(menutext, "&Plugins", sizeof(menutext) - 1);
+	else
+	{
+		
+		status = readINIkey("menu_list", "plugins", menutext, sizeof(menutext), translatefile);
+		if(status == FALSE) strncpy(menutext, "&Plugins", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Plugins", sizeof(menutext) - 1);
+				
+	}
 
-	AppendMenu(IDR_MEXECUTE, MF_POPUP, (UINT_PTR)IDR_MPLUGINS, "P&lugins");
+	AppendMenu(IDR_MEXECUTE, MF_POPUP, (UINT_PTR)IDR_MPLUGINS, menutext);
 	
 	if(stricmp(conf.language, "en") == 0)
 		strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
@@ -369,6 +560,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "execute", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "E&xecute", sizeof(menutext) - 1);
 				
 	}
 
@@ -383,6 +575,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "window", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&Window", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Window", sizeof(menutext) - 1);
 				
 	}
 
@@ -401,6 +594,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_about", "about", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&About of Scryvano", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&About of Scryvano", sizeof(menutext) - 1);
 				
 	}
 	
@@ -414,6 +608,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		status = readINIkey("menu_list", "help", menutext, sizeof(menutext), translatefile);
 		if(status == FALSE) strncpy(menutext, "&Help", sizeof(menutext) - 1);
+		if(menutext[0] == '\0') strncpy(menutext, "&Help", sizeof(menutext) - 1);
 				
 	}
 
