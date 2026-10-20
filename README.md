@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://software.webxpress.top/projects/scryvano" target="_blank"><img src="https://www.busquedaweb.com/openprojects/scryvano/pet.png?v=2" width="auto" height="331" alt="Scryvano's pet"></a><br>
-    <a href="https://github.com/marjuanm/scryvano/blob/main/CHANGELOG"><img src="https://www.busquedaweb.com/openprojects/scryvano/release.png?v=15" height="20" alt="Release version"></a>
+    <a href="https://github.com/marjuanm/scryvano/blob/main/CHANGELOG"><img src="https://www.busquedaweb.com/openprojects/scryvano/release.png?v=16" height="20" alt="Release version"></a>
     <a href="https://github.com/marjuanm/scryvano/archive/refs/heads/main.zip"><img src="https://www.busquedaweb.com/openprojects/scryvano/latest.png?v=2" height="20" alt="Download current version"></a>
     <a href="https://software.webxpress.top/projects/scryvano/repositories/" target="_blank"><img src="https://www.busquedaweb.com/openprojects/scryvano/download.png?v=3" height="20" alt="Repositories"></a>
     <a href="https://github.com/marjuanm/scryvano/blob/main/LICENSE"><img src="https://www.busquedaweb.com/openprojects/scryvano/license.png" height="20" alt="Project's license"></a>
@@ -14,13 +14,12 @@ The project is currently in an early stage and offers a minimally functional int
 
 It has been successfully tested on Windows 3.1, Windows 95/ME, and other compatible environments (see the <a href="https://software.webxpress.top/projects/scryvano/wiki/installation/#running" target="_blank">project wiki</a> for details). You can track the project's overall progress on our <a href="https://software.webxpress.top/projects/scryvano/roadmap/" target="_blank">roadmap</a>.
 
-# 🚀 Updates for the latest version (0.1.6):
+# 🚀 Updates for the latest version (0.1.7):
 
-Several fixes on the statusbar to set correctly size and Windows themes (colors).
+Several corrections to properly adjust the text vertically, as well as revisions to the default text and its translations.
 
 Scryvano is currently being developed to include a status bar inspired by the WinVi source code.<br>
-<a href="https://www.winvi.de/en/" target="_blank">Oficial WinVi website</a><br>
-<a href="https://github.com/FigBug/WinVi" target="_blank">Github's repository</a>
+<a href="https://www.winvi.de/en/" target="_blank">Oficial WinVi website</a> - <a href="https://github.com/FigBug/WinVi" target="_blank">Github's repository</a>
 
 # 📋 License:
 
